@@ -3,15 +3,11 @@
   "version": "0.0.1",
   "description": "JS Inheritance library",
   "main": "morbid.js",
-  "dependencies": {
-    "jsdom": "^9.9.1"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "assert": "^1.4.1",
-    "mocha": "^3.2.0"
   },
   "scripts": {
-    "test": "mocha spec.js"
+    "test": "start test.html"
   },
   "repository": {
     "type": "git",

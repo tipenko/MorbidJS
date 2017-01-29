@@ -1,4 +1,19 @@
 (function(){
+
+
+	const DAL = {//dom abstraction layer
+		add: function (parentOrItsSelector, mi) {
+			
+		},
+
+		undom: function (selectorOrElement) {
+
+		},
+		qsa: function(selector) {//queryselectorall
+
+		}
+	}
+
 	M = function(selector){
 		//jquery-like return from the collection.
 		return objects;
@@ -23,7 +38,7 @@
 		return true;
 	};
 
-	M.remove = function(type, id, className) {
+	M.undom = function(type, id, className) {
 		console.log('remove invoked');
 	};
 
