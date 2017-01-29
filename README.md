@@ -23,8 +23,10 @@ I'll give it a thought later.
 ## Which method takes precedence?##
 Dig [CSS Specificity](https://developer.mozilla.org/en/docs/Web/CSS/Specificity), see [calculator](https://specificity.keegan.st/) here.
 
-
-
-
-
+## Ideology ##
+ - Your task is unique, your code is too. Fuck reusability. Framework
+   handles commonplace. 
+ - Fuck SOLID, whatever this means. 
+ - Your component may change other component, on a higher level, in a
+   different dom subtree. Messy? Price for simplicity.
 
