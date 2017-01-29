@@ -1,41 +1,19 @@
 (function(){
 
-
-	const DAL = {//dom abstraction layer
-		add: function (parentOrItsSelector, mi) {
-			
-		},
-
-		undom: function (selectorOrElement) {
-
-		},
-		qsa: function(selector) {//queryselectorall
-
-		}
-	}
+	var rootEl = document.createElement('div');
 
 	M = function(selector){
-		//jquery-like return from the collection.
-		return objects;
-	}
-
-	var objects = [];
-
-	function mI(first,id,className) {
-		return {
-			type: first,
-			id,
-			className
-		};
+		return jQuery(selector, rootEl);
 	}
 
 	M.domain = function(){
 		console.log('domains are not supported yet');
 	};
 
-	M.add = function(typeStringOrValueObject, id, className) {
-		objects.push(mI(typeStringOrValueObject, id, className));
-		return true;
+	M.append = function(parentSelectorOrEmmetString, emmetStringIfPresent) {//not an emmet for now, but wont stuck on that now.
+		if (arguments.length==1) {
+			return jQuery(rootEl).append(parentSelectorOrEmmetString);
+		} else return jQuery(parentSelectorOrEmmetString, rootEl).append(emmetStringIfPresent);
 	};
 
 	M.undom = function(type, id, className) {
@@ -49,7 +27,7 @@
 
 	//purge current domain
 	M.purge = function() {
-		objects = [];
+		rootEl = document.createElement('div');
 	}
 
 	//we have a rules list, which are 
@@ -64,7 +42,5 @@
 
 		}
 	};
-
-	//we need to focus on object management first.
 
 })();
