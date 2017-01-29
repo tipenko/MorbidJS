@@ -9,11 +9,11 @@ This is an experiment. I want to create Frontend inheritance framework similar t
       }
     }
 
-  .kitten.saturated {
-    sound: () => {
-      console.log('purr');
+    .kitten.saturated {
+      sound: () => {
+        console.log('purr');
+      }
     }
-  }
 
 That's it.  This may get ugly soon, but i want to see it myself.
 
