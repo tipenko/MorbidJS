@@ -1,0 +1,29 @@
+{
+  "name": "morbid",
+  "version": "0.0.1",
+  "description": "JS Inheritance library",
+  "main": "morbid.js",
+  "dependencies": {},
+  "devDependencies": {
+    "assert": "^1.4.1",
+    "mocha": "^3.2.0"
+  },
+  "scripts": {
+    "test": "mocha spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tipenko/MorbidJS.git"
+  },
+  "keywords": [
+    "js",
+    "inheritance",
+    "css"
+  ],
+  "author": "stipenko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tipenko/MorbidJS/issues"
+  },
+  "homepage": "https://github.com/tipenko/MorbidJS#readme"
+}
