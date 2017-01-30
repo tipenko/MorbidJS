@@ -3,7 +3,7 @@ describe("Morbid", function() {
 		M.purge();
 	});
 
-	it("exists in a global namespace", () => {
+	/*it("exists in a global namespace", () => {
 		expect(M).to.be.ok();
 	});
 
@@ -11,7 +11,7 @@ describe("Morbid", function() {
 		expect(M.append('<div id=app class=blacklist1/>')).to.be.ok();
 	});
 
-	it("returns all appended if queried this way", () => {
+	it("returns length 2 if two elements added", () => {
 		M.append('<div id=app class=blacklist1/>');
 		M.append('<div id=app class=blacklist2/>')
 		expect(M('div').length).to.be.equal(2);
@@ -29,6 +29,53 @@ describe("Morbid", function() {
 		M.append('<div id=app class=blacklist1/>');
 		M.append('.blacklist1', '<div id=app class=blacklist2/>')
 		expect(M('.blacklist1').children().length).to.equal(1);
+	});
+
+	it("it is possible to add rule", () => {
+		M.append('<div id=app class=blacklist1/>');
+		M.rule('#app', {
+			sound: () => {
+				return true;
+			}
+		});
+		expect(M('#app').sound()).to.be.ok();
+	});
+
+	it("all methods are exposed to top", () => {
+		M.append('<div id=app class=blacklist1/>');
+		M.append('<div id=manapp class=blacklist1/>');
+
+		M.rule('#app', {
+			sound: () => {
+				return true;
+			}
+		});
+
+		M.rule('#manapp', {
+			escape: () => {
+				return true;
+			}
+		});
+		expect(M('div').sound).to.be.ok();
+		expect(M('div').escape).to.be.ok();
+	});*/
+
+	it("you can call one method for whole collection, and some hard chain is returned", () => {
+		M.append('<div id=app class=blacklist1/>');
+		M.append('<div id=manapp class=blacklist1/>');
+
+		M.rule('#app', {
+			sound: () => {
+				return true;
+			}
+		});
+
+		M.rule('#manapp', {
+			escape: () => {
+				return true;
+			}
+		});
+		expect(M('div').sound()).to.be.ok();//shall call warn
 	});
 
 });
