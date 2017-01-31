@@ -195,6 +195,7 @@ describe("Morbid second batch, DOM-related", function() {
 				return true;
 			}
 		});
+		debugger;
 		var r = M('.child1').sole.test();
 		expect(r).to.equal(true);
 	});

@@ -5,19 +5,12 @@
 	M = function(selector){
 		var foundSet = jQuery(selector, rootEl);
 
-		let allMethodsOfFoundElements = _.chain(foundSet).map( rules.getThis ).map((item) => _.keys(item)).flatten().uniq().value();
-
 		function run(methodName){
 			var meaningfulArguments = Array.prototype.slice.call(arguments); //arguments passed from caller
 			meaningfulArguments.shift();
 			//iterate over all elements of foundSet. If method is present for them, invoke it and report
 			var report=[];
 
-			/*var pr = new Proxy(foundSet, {
-				get: (target, methodName) => {
-					//we have to return a function
-				}
-			});*/
 			_.each(foundSet, elementReference => {
 				var thisObject = rules.getThis(elementReference);
 				var method = thisObject[methodName];
@@ -32,19 +25,28 @@
 			return report;
 		}
 
-		var sole = {};
-		
-		_.each(allMethodsOfFoundElements, methodName => {
-			foundSet[methodName] = run.bind(foundSet, methodName);
-			sole[methodName] = (userArguments) => {
-				var returnValue = foundSet[methodName].apply(foundSet, userArguments)
-				return extractSoleFromReport(returnValue);
-			} 
+		var soleWrapper = new Proxy(foundSet, {
+			get: (fs, name) => {
+				//we have a name of a method. we have to iterate over collection 
+				return () => {
+						var a = Array.prototype.slice.call(arguments);
+						a.splice(0,0,name);
+						var report = run.apply(foundSet, a);
+						return report[0].returnValue;
+					};
+				}
 		});
 
-		foundSet.sole = sole;
+		var p = new Proxy(foundSet, {
+			get: (fs, name) => {
+				if (fs[name]) return fs[name];//jquery stuff 
+				if (name=="sole") return soleWrapper;
+				//we have a name of a method. we have to iterate over collection 
+				return run.bind(foundSet, name);
+			}
+		});
 
-		return foundSet;
+		return p;
 	}
 
 	function extractSoleFromReport(report) {
