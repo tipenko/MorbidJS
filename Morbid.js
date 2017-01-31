@@ -64,6 +64,11 @@
 		rules.addRule(selector, ruleObject);
 	};
 
+	//adds new css rule. No way to delete rule yet. Maybe there should not be.
+	M.rulebulk = function(o) {
+		_.forIn(o, (ruleObject, selector) => rules.addRule(selector, ruleObject) );
+	};
+
 	M.purge = function() {
 		jQuery(rootEl).off();
 		rootEl = document.createElement('div');

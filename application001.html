@@ -12,12 +12,16 @@
     color:red;
   }
 
-  #mainForm .validationMessage {
-    display:none;
-  }
-
   #mainForm.invalid .validationMessage {
     display:initial;
+  }
+
+  #mainForm.invalid .submitButton {
+    color: gray;
+  }
+
+  .validationMessage {
+    display:none;
   }
 
   </style>
@@ -31,34 +35,24 @@
 <script>
   M.control(document.getElementById('mainApp'));
 
-  M.rule('input[type=submit]', {
-    click: (event) => {
-      event.preventDefault();
-      var isValid = M('#mainForm').sole.validate();
-      M('#mainForm').toggleClass('invalid', !isValid);
-      M('#mainForm').csubmit();
-    }
-  });
-
-  M.rule('#mainForm', {
-    validate: (event) => {
-      return M('#mainForm input[name=firstname]').val().length>0;
-    }
-  });
-
-  M.rule('#mainForm:not(.invalid)', {
-    csubmit: (event) => {
-      return M('#mainForm').submit();
+  M.rulebulk({
+    '#mainForm' : {
+      validate: (event) => M('#mainForm input[name=firstname]').val().length>0,
+      keyup: (event) => M('#mainForm').update(),
+      update: () => M('#mainForm').toggleClass('invalid', !M('#mainForm').sole.validate()),
+    }, 
+    '#mainForm:not(.invalid) .submitButton' : {
+      click: (event) => M('#mainForm').sole.validate() && M('#mainForm').submit()
     }
   });
 </script>
 
-<form id='mainForm'>
-  First name:<span class="validationMessage">(required)</span> <br>
+<form id='mainForm' class="invalid">
+  First name:<span class="validationMessage"> this field is required!</span> <br>
   <input type="text" name="firstname"><br>
   Last name: <span class="validationMessage">(required)</span> <br>
   <input type="text" name="lastname">
-  <input type="submit" name="submit something">
+  <input type="button" class="submitButton" value="submit if okay"></input>
 </form>
 </body>
 </html>

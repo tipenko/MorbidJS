@@ -195,7 +195,6 @@ describe("Morbid second batch, DOM-related", function() {
 				return true;
 			}
 		});
-		debugger;
 		var r = M('.child1').sole.test();
 		expect(r).to.equal(true);
 	});
@@ -243,6 +242,48 @@ describe("Morbid second batch, DOM-related", function() {
 		});
 
 		$('.child1').trigger('click');
+	});
+
+	it("more specific listener takes precedence", () => {
+		M.control(document.getElementById('MorbidBase'));
+		var result = 0;
+		M.rule('.child1', {
+			click : (event) => {
+				result = 1;
+			}
+		});
+
+		M.rule('#host .child1', {
+			click : (event) => {
+				result = 2;
+			}
+		});
+
+		$('.child1').trigger('click');
+		expect(result).to.be.equal(2);
+
+	});
+
+	it("rulebulk addition works too", () => {
+		M.control(document.getElementById('MorbidBase'));
+		var result = 0;
+
+		M.rulebulk({
+			'.child1': {
+				click : (event) => {
+					result = 1;
+				}
+			}, 
+			'#host .child1': {
+				click : (event) => {
+					result = 2;
+				}
+			}
+
+		});
+
+		$('.child1').trigger('click');
+		expect(result).to.be.equal(2);
 	});
 });
 
