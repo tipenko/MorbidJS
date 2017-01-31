@@ -68,7 +68,7 @@ On the latter: It is slow, but it works. DOM storage is expensive, this object c
  - At all cases use M(selector) to get access to logic and components. Do not pass references - use selectors. Single responsibility is not messed up: frontend is responsible for frontend, all fair;
  - At any cost, store boolean and other states in class name, attribute, through child-relationship or in any css-addressable form. Css will adjust appearance, Morbid will adjust behaviour respectfully;
  - In method's body extract as much as you can to methods. Using if(this.hasOneSelected)? Extract {} clause to separate method with a good name and override it in same rule with .has-one-selected in selector. 
- - An object's behaviour is subject to change in the middle of a method, and it's fun. Don't like it? There's React for you, go away.
+ - An object's behaviour is subject to change in the middle of a method, and it's fun. Don't like it? There's React for you, go away. Don't forget your webpack and babel. We don't need them here.
  
  
 
