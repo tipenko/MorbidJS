@@ -3,7 +3,7 @@ describe("Morbid", function() {
 		M.purge();
 	});
 
-	/*it("exists in a global namespace", () => {
+	it("exists in a global namespace", () => {
 		expect(M).to.be.ok();
 	});
 
@@ -44,7 +44,6 @@ describe("Morbid", function() {
 	it("all methods are exposed to top", () => {
 		M.append('<div id=app class=blacklist1/>');
 		M.append('<div id=manapp class=blacklist1/>');
-
 		M.rule('#app', {
 			sound: () => {
 				return true;
@@ -58,7 +57,7 @@ describe("Morbid", function() {
 		});
 		expect(M('div').sound).to.be.ok();
 		expect(M('div').escape).to.be.ok();
-	});*/
+	});
 
 	it("you can call one method for whole collection, and some hard chain is returned", () => {
 		M.append('<div id=app class=blacklist1/>');
@@ -77,5 +76,47 @@ describe("Morbid", function() {
 		});
 		expect(M('div').sound()).to.be.ok();//shall call warn
 	});
+
+	it("M returns report", () => {
+		M.append('<div id=app class=blacklist1/>');
+		M.append('<div id=manapp class=blacklist1/>');
+
+		M.rule('#app', {
+			sound: () => {
+				return 'paramparamparam';
+			}
+		});
+
+		M.rule('.blacklist1', {
+			sound: () => {
+				return true;
+			}
+		});
+
+		var o = M('div').sound();
+		expect(o.length).to.equal(2);
+	});
+
+	it("method for more specific selector is applied", () => {
+		M.append('<div id=app class=blacklist1/>');
+		M.append('<div id=manapp class=blacklist1/>');
+
+		M.rule('#app', {
+			sound: () => {
+				return 'paramparamparam';
+			}
+		});
+
+		M.rule('.blacklist1', {
+			sound: () => {
+				return true;
+			}
+		});
+
+		var o = M('div').sound();
+		expect(o[0].returnValue).to.equal('paramparamparam');
+		expect(o[1].returnValue).to.equal(true);
+	});
+
 
 });

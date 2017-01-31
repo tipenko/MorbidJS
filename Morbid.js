@@ -1,47 +1,37 @@
 (function(){
 
 	var rootEl = document.createElement('div');
-	var ruleMap = {};
-
-	function getMethodNamesForItem(item) {
-		return _.chain(ruleMap).pickBy((value,key) => {
-				return jQuery(item).is(key);
-			}).values().reduce((sum, item) => {
-				return _.concat(sum, _.keys(item));
-			}, []).value();
-	}
 
 	M = function(selector){
 		var foundSet = jQuery(selector, rootEl);
-		//we have, potentially, lots of elements and lots of styles.
-		//iterate over set, define set of methods that are applicable to ANY element in set. 
-		//fill returning object with those methods and methods of Morbid.
 
-		let applicableMethods = _.chain(foundSet).map( getMethodNamesForItem ).flatten().value();
+		let allMethodsOfFoundElements = _.chain(foundSet).map( rules.getThis ).map((item) => _.keys(item)).flatten().uniq().value();
 
-		function run(methodName){
-			//search by rules that have method like this. Choose the most specific one. run it.
-			var firstRandomSelectorWithMethod = _.findKey(ruleMap, (methods, cssSelector ) => {
-				return methods[methodName];
+		function run(methodName){//and variable arguments!
+			var meaningfulArguments = Array.prototype.slice.call(arguments);
+			meaningfulArguments.shift();
+			//iterate over all elements of foundSet. If method is present for them, invoke it and report
+			var report=[];
+			_.each(foundSet, elementReference => {
+				var thisObject = rules.getThis(elementReference);
+				var method = thisObject[methodName];
+				if (method) {
+					var returnValue = method.apply(elementReference, meaningfulArguments);
+					report.push({
+						elementReference,
+						returnValue
+					});
+				} 
 			});
-			var method = _.get(ruleMap, firstRandomSelectorWithMethod + '.' + methodName);
-			if (!method) {
-				console.warn('method ', methodName, ' is invoked for ', this, 'but is not present');
-			} else return method.bind(this)();
+			return report;
 		}
-
-		debugger;
-		_.each(foundSet, item => {
-			_.each(applicableMethods, methodName => {
-				foundSet[methodName] = run.bind(item, methodName);
-			});
+		
+		_.each(allMethodsOfFoundElements, methodName => {
+			foundSet[methodName] = run.bind(foundSet, methodName);
 		});
+
 		return foundSet;
 	}
-
-	M.domain = function(){
-		console.log('domains are not supported yet');
-	};
 
 	M.append = function(parentSelectorOrEmmetString, emmetStringIfPresent) {//not an emmet yet, but wont stuck on that now.
 		if (arguments.length==1) {
@@ -49,28 +39,40 @@
 		} else return jQuery(parentSelectorOrEmmetString, rootEl).append(emmetStringIfPresent);
 	};
 
-	M.undom = function(selector) {
-		console.log('remove invoked');
-	};
-
 	//adds new css rule. No way to delete rule yet. Maybe there should not be.
 	M.rule = function(selector, ruleObject) {
-		ruleMap[selector] = ruleObject;
+		rules.addRule(selector, ruleObject);
 	};
 
 	M.purge = function() {
 		rootEl = document.createElement('div');
+		rules.rulesSortedArray =  [];
 	}
 
-	//we have a rules list, which are 
-	//selector->ruleObject
-	var CssHelper = {
-		isApplicable: function(mItem, selector) {
-
-		},
-		getMatching: function(selector) {
-
-		}
+	var rules = {
+		rulesSortedArray: []
 	};
+
+	rules.addRule = function(selector, ruleObject){
+		this.rulesSortedArray.push({
+			selector,
+			ruleObject
+		});
+
+		this.rulesSortedArray.sort((i1,i2) => {
+			return SPECIFICITY.compare(i1.selector, i1.selector);
+		});
+	}.bind(rules);
+
+	rules.getThis = function(domReference){
+		const applicableRuleObjects = _.chain(this.rulesSortedArray).filter(
+			(rO) => jQuery(domReference).is(rO.selector) ).map(rO => rO.ruleObject).value();
+
+		var thisObject = _.partial(_.extend, {}).apply(window, applicableRuleObjects);
+		//thisObject now should have actual methods with maximum specificity;
+		//TODO ADD SOME MAP UNIQUE TO DOM ELEMENT
+		return thisObject;
+	}.bind(rules);
+
 
 })();

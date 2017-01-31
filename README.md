@@ -1,5 +1,6 @@
 # MorbidJS
 *"One can't simply define object behaviour like font-weight in css. Or can he?"*
+*"Make javascript fun again"*
 
 This is an experiment. I want to create Frontend inheritance framework similar to CSS selectors. So, methods are described in selectors like 
 
@@ -23,6 +24,27 @@ Morbid is backed by jQuery. This is not forever.
     M.append('<div id=app class=blacklist2/>')
 
 *div#app.blacklist2* is created after this call, as a child of detached root element. This element will have behaviours provided by css-like behaviour sheets.
+
+### Method elevation #
+Given 
+   .wc {
+      flush: () => 300;
+    }
+
+    .water {
+      stink: () => {}
+    }
+
+    <div class="wc"><div class="water"/></div>
+We have 
+    (typeof M('div').flush=="function" && typeof M('div').stink=="function") == true
+
+### Silent failure #
+Same as above, 
+    M('div').flush()
+shall return
+    [{elementReference: div.wc, returnValue:300 }]
+.water has not been mentioned, method has not been invoked. That's what silent failure is.
 
 ### Which method or property takes precedence?##
 Dig [CSS Specificity](https://developer.mozilla.org/en/docs/Web/CSS/Specificity), see [calculator](https://specificity.keegan.st/) here.
