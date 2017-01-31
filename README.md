@@ -26,8 +26,8 @@ Morbid is backed by jQuery. This is not forever.
 *div#app.blacklist2* is created after this call, as a child of detached root element. This element will have behaviours provided by css-like behaviour sheets.
 
 ### Method elevation #
-Given 
-   .wc {
+Given
+    .wc {
       flush: () => 300;
     }
 
@@ -44,7 +44,7 @@ Same as above,
     M('div').flush()
 shall return
     [{elementReference: div.wc, returnValue:300 }]
-.water has not been mentioned, method has not been invoked. That's what silent failure is.
+you can see that .water has not been mentioned, method has not been invoked. That's what silent failure is.
 
 ### Which method or property takes precedence?##
 Dig [CSS Specificity](https://developer.mozilla.org/en/docs/Web/CSS/Specificity), see [calculator](https://specificity.keegan.st/) here.
