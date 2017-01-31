@@ -27,22 +27,26 @@ Morbid is backed by jQuery. This is not forever.
 
 ### Method elevation #
 Given
-    .wc {
-      flush: () => 300;
-    }
 
-    .water {
-      stink: () => {}
-    }
+        .wc {
+            flush: () => 300;
+        }
+        
+        .water {
+            stink: () => {}
+        }
 
     <div class="wc"><div class="water"/></div>
-We have 
+we have 
+
     (typeof M('div').flush=="function" && typeof M('div').stink=="function") == true
 
 ### Silent failure #
 Same as above, 
+
     M('div').flush()
 shall return
+
     [{elementReference: div.wc, returnValue:300 }]
 you can see that .water has not been mentioned, method has not been invoked. That's what silent failure is.
 
