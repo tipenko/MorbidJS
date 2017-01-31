@@ -63,11 +63,22 @@ you can see that .water has not been mentioned, and method has not been invoked.
 For each DOM element got into response, the most specific method is invoked.  
 
 
+ 
+### Events #
+
+    blur, focus, focusin, focusout, load, resize, scroll, unload, click, dblclick, mousedown, mouseup, mousemove, mouseover, mouseout, mouseenter, mouseleave, change, select, submit, keydown, keypress, keyup, error
+
+### Browser support #
+Limited by Proxy API. Won't work in IE 11.
+
+
 ### Architecture. Reusability. Modularity. Design. Performance ###
 MorbidJS is to create something you need extremely fast and small. If you have a team and a year-long project, consider something else. If you need a small widget to display in iframe - hello!
 On the latter: It is slow, but it works. DOM storage is expensive, this object calculation is too. I will take care of this later.
 
 ### Commandments ###
 10 YOU MUST STORE BUSINESS INSTANCES IN CSS-ACCESSIBLE WAY (IN DOM, VISIBLE OR NOT) AT ALL COSTS;
+
 20 USE M(SELECTOR) TO ADRESS EVERYTHING EVERYTIME. PASSING REFERENCES IS HERESY;
+
 30 USE INHERITANCE INSTEAD IF(). USE M() INSTEAD LOOPS() 

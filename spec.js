@@ -1,4 +1,4 @@
-describe("Morbid", function() {
+describe("Morbid first batch", function() {
 	beforeEach(()=>{
 		M.purge();
 	});
@@ -118,8 +118,6 @@ describe("Morbid", function() {
 		expect(o[1].returnValue).to.equal(true);
 	});
 
-
-
 	it("more complex case of specificity", () => {
 		M.append('<div id=app class=blacklist1/>');
 		M.append('<div id=manapp class=blacklist1/>');
@@ -127,6 +125,9 @@ describe("Morbid", function() {
 		M.rule('#app', {
 			sound: () => {
 				return 'paramparamparam';
+			}, 
+			mute: () => {
+				return 'mute';
 			}
 		});
 
@@ -142,8 +143,106 @@ describe("Morbid", function() {
 			}
 		});
 
-		var o = M('#app').sound();
-		expect(o[0].returnValue).to.equal('app');
+		var s = M('#app').sound();
+		var m = M('#app').mute();
+
+		expect(s[0].returnValue).to.equal('app');
+		expect(m[0].returnValue).to.equal('mute');
+
+	});
+});
+
+describe("Morbid second batch, DOM-related", function() {
+	beforeEach(()=>{
+		M.purge();
+		$('body').append('<div id=MorbidBase/>');
+		$('#MorbidBase').html(`
+			<div id="host">
+				<span class="child1"/>
+				<span class="child2"/>
+			</div>
+
+		`).hide();
 	});
 
+	afterEach(()=>{
+		$('#MorbidBase').remove();
+	});
+
+	it("Morbid manages pre-existing DOM", () => {
+		M.control(document.getElementById('MorbidBase'));
+		expect(M('#host')[0].children.length).to.equal(2);
+	});
+
+	it("Morbid applies behaviours to pre-existing DOM ", () => {
+		M.control(document.getElementById('MorbidBase'));
+
+		M.rule('.child1', {
+			test : () => {
+				return true;
+			}
+		});
+		var r = M('.child1').test();
+		expect(r.length).to.equal(1);
+		expect(r[0].returnValue).to.equal(true);
+	});
+
+	it("Morbid sole returns result instead of execution report ", () => {
+		M.control(document.getElementById('MorbidBase'));
+
+		M.rule('.child1', {
+			test : () => {
+				return true;
+			}
+		});
+		var r = M('.child1').sole.test();
+		expect(r).to.equal(true);
+	});
+
+	it("Invocation of nonexistent method does not results in exception", () => {
+		M.control(document.getElementById('MorbidBase'));
+
+		M.rule('.child1', {
+			test : () => {
+				return true;
+			}
+		});
+		var fine = undefined;
+		try {
+			M('.child1').explode();
+			fine = true;
+		} catch(e){
+			fine = false;
+		}
+		expect(fine).to.equal(true);
+	});
+
+	it("one can assign onclick listener via rule ", () => {
+		M.control(document.getElementById('MorbidBase'));
+
+		var itHasChanged = false;
+		M.rule('.child1', {
+			click : () => {
+				itHasChanged = true;
+				return true;
+			}
+		});
+
+		$('.child1').trigger('click');
+		expect(itHasChanged).to.be.ok();
+	});
+
+	it("event listener receives event as param", () => {
+		M.control(document.getElementById('MorbidBase'));
+
+		M.rule('.child1', {
+			click : (event) => {
+				expect(event.type).to.be.equal('click');
+			}
+		});
+
+		$('.child1').trigger('click');
+	});
 });
+
+

@@ -1,0 +1,64 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Sample Form 001</title>
+
+  <style>
+  #mainForm {
+    color:gray;
+  }
+
+  #mainForm.invalid {
+    color:red;
+  }
+
+  #mainForm .validationMessage {
+    display:none;
+  }
+
+  #mainForm.invalid .validationMessage {
+    display:initial;
+  }
+
+  </style>
+</head>
+<body id="mainApp">
+  <script src="https://cdn.rawgit.com/jquery/jquery/2.1.4/dist/jquery.min.js"></script>
+  <script src="https://cdn.rawgit.com/lodash/lodash/4.17.4/dist/lodash.js"></script>
+  <script src="https://cdn.rawgit.com/keeganstreet/specificity/2ab18ea1/specificity.js"></script>
+  <script src="Morbid.js"></script>
+   
+<script>
+  M.control(document.getElementById('mainApp'));
+
+  M.rule('input[type=submit]', {
+    click: (event) => {
+      event.preventDefault();
+      var isValid = M('#mainForm').sole.validate();
+      M('#mainForm').toggleClass('invalid', !isValid);
+      M('#mainForm').csubmit();
+    }
+  });
+
+  M.rule('#mainForm', {
+    validate: (event) => {
+      return M('#mainForm input[name=firstname]').val().length>0;
+    }
+  });
+
+  M.rule('#mainForm:not(.invalid)', {
+    csubmit: (event) => {
+      return M('#mainForm').submit();
+    }
+  });
+</script>
+
+<form id='mainForm'>
+  First name:<span class="validationMessage">(required)</span> <br>
+  <input type="text" name="firstname"><br>
+  Last name: <span class="validationMessage">(required)</span> <br>
+  <input type="text" name="lastname">
+  <input type="submit" name="submit something">
+</form>
+</body>
+</html>
