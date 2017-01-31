@@ -13,7 +13,7 @@ describe("Morbid first batch", function() {
 
 	it("returns length 2 if two elements added", () => {
 		M.append('<div id=app class=blacklist1/>');
-		M.append('<div id=app class=blacklist2/>')
+		M.append('<div id=app class=blacklist2/>');
 		expect(M('div').length).to.be.equal(2);
 	});
 
@@ -77,7 +77,7 @@ describe("Morbid first batch", function() {
 		expect(M('div').sound()).to.be.ok();//shall call warn
 	});
 
-	it("M returns report", () => {
+	it("MUST: M returns single value by default  report", () => {
 		M.append('<div id=app class=blacklist1/>');
 		M.append('<div id=manapp class=blacklist1/>');
 
@@ -93,9 +93,29 @@ describe("Morbid first batch", function() {
 			}
 		});
 
-		var o = M('div').sound();
+		expect(M('div').sound()).to.equal('paramparamparam');
+	});
+
+	it("MUST: M returns report if called with W ", () => {
+		M.append('<div id=app class=blacklist1/>');
+		M.append('<div id=manapp class=blacklist1/>');
+
+		M.rule('#app', {
+			sound: () => {
+				return 'paramparamparam';
+			}
+		});
+
+		M.rule('.blacklist1', {
+			sound: () => {
+				return true;
+			}
+		});
+
+		var o = M('div').W.sound();
 		expect(o.length).to.equal(2);
 	});
+
 
 	it("method for more specific selector is applied", () => {
 		M.append('<div id=app class=blacklist1/>');
@@ -113,7 +133,7 @@ describe("Morbid first batch", function() {
 			}
 		});
 
-		var o = M('div').sound();
+		var o = M('div').W.sound();
 		expect(o[0].returnValue).to.equal('paramparamparam');
 		expect(o[1].returnValue).to.equal(true);
 	});
@@ -143,8 +163,8 @@ describe("Morbid first batch", function() {
 			}
 		});
 
-		var s = M('#app').sound();
-		var m = M('#app').mute();
+		var s = M('#app').W.sound();
+		var m = M('#app').W.mute();
 
 		expect(s[0].returnValue).to.equal('app');
 		expect(m[0].returnValue).to.equal('mute');
@@ -182,21 +202,9 @@ describe("Morbid second batch, DOM-related", function() {
 				return true;
 			}
 		});
-		var r = M('.child1').test();
+		var r = M('.child1').W.test();
 		expect(r.length).to.equal(1);
 		expect(r[0].returnValue).to.equal(true);
-	});
-
-	it("Morbid sole returns result instead of execution report ", () => {
-		M.control(document.getElementById('MorbidBase'));
-
-		M.rule('.child1', {
-			test : () => {
-				return true;
-			}
-		});
-		var r = M('.child1').sole.test();
-		expect(r).to.equal(true);
 	});
 
 	it("Invocation of nonexistent method does not results in exception", () => {

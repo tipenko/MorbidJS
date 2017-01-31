@@ -27,26 +27,29 @@
 
 		var soleWrapper = new Proxy(foundSet, {
 			get: (fs, name) => {
+				if (fs[name]) return fs[name];
+				if (name=="W") return multipleWrapper;
 				//we have a name of a method. we have to iterate over collection 
 				return () => {
 						var a = Array.prototype.slice.call(arguments);
-						a.splice(0,0,name);
+						a.splice(0,0, name);
 						var report = run.apply(foundSet, a);
+						if (_.isEmpty(report)) {
+							return undefined;	
+						}
 						return report[0].returnValue;
 					};
 				}
 		});
 
-		var p = new Proxy(foundSet, {
+		var multipleWrapper = new Proxy(foundSet, {
 			get: (fs, name) => {
-				if (fs[name]) return fs[name];//jquery stuff 
-				if (name=="sole") return soleWrapper;
 				//we have a name of a method. we have to iterate over collection 
 				return run.bind(foundSet, name);
 			}
 		});
 
-		return p;
+		return soleWrapper;
 	}
 
 	function extractSoleFromReport(report) {
