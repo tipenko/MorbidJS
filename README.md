@@ -1,7 +1,7 @@
 # MorbidJS
 *"Make frontend fun again"*
 
-This is an experiment. I want to create Frontend inheritance framework similar to CSS selectors. So, methods are described in selectors like 
+This is an experiment. I want to create framework with inheritance similar to CSS selectors specificity. So, methods are described in selectors like 
 
     .kitten {
       sound: () => {

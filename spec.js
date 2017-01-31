@@ -119,4 +119,31 @@ describe("Morbid", function() {
 	});
 
 
+
+	it("more complex case of specificity", () => {
+		M.append('<div id=app class=blacklist1/>');
+		M.append('<div id=manapp class=blacklist1/>');
+
+		M.rule('#app', {
+			sound: () => {
+				return 'paramparamparam';
+			}
+		});
+
+		M.rule('.blacklist1', {
+			sound: () => {
+				return true;
+			}
+		});
+
+		M.rule('#app.blacklist1', {
+			sound: () => {
+				return "app";
+			}
+		});
+
+		var o = M('#app').sound();
+		expect(o[0].returnValue).to.equal('app');
+	});
+
 });

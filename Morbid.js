@@ -7,8 +7,8 @@
 
 		let allMethodsOfFoundElements = _.chain(foundSet).map( rules.getThis ).map((item) => _.keys(item)).flatten().uniq().value();
 
-		function run(methodName){//and variable arguments!
-			var meaningfulArguments = Array.prototype.slice.call(arguments);
+		function run(methodName){
+			var meaningfulArguments = Array.prototype.slice.call(arguments); //arguments passed from caller
 			meaningfulArguments.shift();
 			//iterate over all elements of foundSet. If method is present for them, invoke it and report
 			var report=[];
@@ -25,7 +25,7 @@
 			});
 			return report;
 		}
-		
+
 		_.each(allMethodsOfFoundElements, methodName => {
 			foundSet[methodName] = run.bind(foundSet, methodName);
 		});
@@ -58,10 +58,10 @@
 			selector,
 			ruleObject
 		});
-
 		this.rulesSortedArray.sort((i1,i2) => {
-			return SPECIFICITY.compare(i1.selector, i1.selector);
+			return SPECIFICITY.compare(i1.selector, i2.selector);
 		});
+
 	}.bind(rules);
 
 	rules.getThis = function(domReference){
