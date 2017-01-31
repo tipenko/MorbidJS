@@ -1,6 +1,5 @@
 # MorbidJS
-*"One can't simply define object behaviour like font-weight in css. Or can he?"*
-*"Make javascript fun again"*
+*"Make frontend fun again"*
 
 This is an experiment. I want to create Frontend inheritance framework similar to CSS selectors. So, methods are described in selectors like 
 
@@ -17,6 +16,11 @@ This is an experiment. I want to create Frontend inheritance framework similar t
     }
 
 That's it.  This may get ugly soon, but i want to see it myself.
+
+### Why? #
+- Conditions and loops may turn out to be not necessary anymore;
+- Faster development, smaller and cleaner code; Or not.
+- Something funny i can't foresee yet.
 
 ### Model #
 Morbid is backed by jQuery. This is not forever.
@@ -54,9 +58,9 @@ you can see that .water has not been mentioned, method has not been invoked. Tha
 Dig [CSS Specificity](https://developer.mozilla.org/en/docs/Web/CSS/Specificity), see [calculator](https://specificity.keegan.st/) here.
 
 ### Ideology ###
- - DOM is model.
- - Our purpose is to explore how css-like inheritance works. Not necessarily frontend.
- - Your component may change other component, on a higher level, in a
-   different dom subtree. Messy? Price for simplicity.
- - If possible, store boolean and other states in class name. Css will adjust appearance, Morbid will adjust behaviour respectfully. 
+ - DOM is model;
+ - At all cases use M(selector) to get access to logic and components. Do not pass references - use selectors. Single responsibility is not messed up: frontend is responsible for frontend, all fair;
+ - If possible, store boolean and other states in class name. Css will adjust appearance, Morbid will adjust behaviour respectfully;
+ - Extract as much as you can to methods. Using if () == doing it wrong;
+ - An object's behaviour is subject to change in the middle of a method, and it's fun. Don't like it? There's React for you, go away.
 
