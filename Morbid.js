@@ -123,7 +123,7 @@
 
 
 		if (multipleEventNames && multipleEventNames.length) {
-			throw new Error( listOfRepeatingEventNames.join(' and ') + 'repeat more than once in passed rules object. They are likely to be invoked together, and Morbid will be unable to determine order. Please, break up this lute or bulk instruction in consequent ones')
+			throw new Error( multipleEventNames.join(' and ') + 'repeat more than once in passed rules object. They are likely to be invoked together, and Morbid will be unable to determine order. Please, break up this lute or bulk instruction in consequent ones')
 		}
 	}
 
@@ -148,7 +148,6 @@
 	};
 
 	function getThis(domReference){
-		debugger;
 		const applicableLutes = _.filter(lutesSortedArray, lute => jQuery(domReference).is(lute.selector) );
 		const ruleObjects = _.map(applicableLutes, lute => lute.ruleObject)
 
