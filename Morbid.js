@@ -56,12 +56,6 @@
 		return report[0].returnValue;
 	}
 
-	M.eke = function(parentSelectorOrEmmetString, emmetStringIfPresent) {//not an emmet yet, but wont stuck on that now.
-		if (arguments.length==1) {
-			return jQuery(rootEl).append(parentSelectorOrEmmetString);
-		} else return jQuery(parentSelectorOrEmmetString, rootEl).append(emmetStringIfPresent);
-	};
-
 	//adds new css rule. No way to delete rule yet. Maybe there should not be.
 	M.lute = function(selector, ruleObject) {
 		if (selector.indexOf(',')!==-1) {
@@ -84,7 +78,7 @@
 		rules.rulesSortedArray =  [];
 	}
 
-	M.control = function(elementReference) {
+	M.rein = function(elementReference) {
 		rootEl= elementReference;
 	}
 
