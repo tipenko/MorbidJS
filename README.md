@@ -79,7 +79,7 @@ You can specify the following words as method names, and they will be fed to jQu
 
     blur, focus, focusin, focusout, load, resize, scroll, unload, click, dblclick, mousedown, mouseup, mousemove, mouseover, mouseout, mouseenter, mouseleave, change, select, submit, keydown, keypress, keyup, error
 
-This works almost fine. Today one random listener is invoked, but we will fix it.
+This works almost fine. Today one random listener is invoked in case of conflict (both 'click onkeyup' and 'click' in one selector) but we will fix it soon.
 
 ### Browser support #
 Limited by Proxy API. Won't work in IE 11.
