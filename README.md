@@ -19,6 +19,7 @@ That's it. This may get ugly soon, but i want to see it myself.
 
 ### Why? #
 - Conditions and loops may turn out to be not necessary anymore;
+- Small size of methods;
 - Faster development, smaller and cleaner code. Or not!
 - Something funny i can't foresee yet.
 
