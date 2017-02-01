@@ -75,6 +75,9 @@ you can see that .water has not been mentioned, and method has not been invoked.
 For each DOM element got into response, the most specific method is invoked.
 There is Proxies under the hood, so invoking missing method is perfectly legal and causes no exception.
  
+### "super" equivalent #
+Is not implemented yet. Maybe it should not be.
+
 ### Events #
 You can specify the following words as method names, and they will be fed to jQuery.on:
 

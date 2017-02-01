@@ -1,6 +1,32 @@
 (function(){
 
 	var rootEl = document.createElement('div');
+	var lutesSortedArray =  [];
+
+	var jqEvents =  ['blur',
+			'focus',
+			'focusin',
+			'focusout',
+			'load',
+			'resize',
+			'scroll',
+			'unload',
+			'click',
+			'dblclick',
+			'mousedown',
+			'mouseup',
+			'mousemove',
+			'mouseover',
+			'mouseout',
+			'mouseenter',
+			'mouseleave',
+			'change',
+			'select',
+			'submit',
+			'keydown',
+			'keypress',
+			'keyup',
+			'error'];
 
 	M = function(selector){
 		var foundSet = jQuery(selector, rootEl);
@@ -12,7 +38,7 @@
 			var report=[];
 
 			_.each(foundSet, elementReference => {
-				var thisObject = rules.getThis(elementReference);
+				var thisObject = getThis(elementReference);
 				var method = thisObject[methodName];
 				if (method) {
 					var returnValue = method.apply(elementReference, meaningfulArguments);
@@ -64,105 +90,96 @@
 				M.lute(selector, ruleObject);
 			});
 		}
-		rules.addRule(selector, ruleObject);
+		addLute(selector, ruleObject);
 	};
 
 	//adds new css rule. No way to delete rule yet. Maybe there should not be.
 	M.bulk = function(o) {
-		_.forIn(o, (ruleObject, selector) => rules.addRule(selector, ruleObject) );
+		_.forIn(o, (ruleObject, selector) => addLute(selector, ruleObject) );
 	};
 
 	M.purge = function() {
 		jQuery(rootEl).off();
 		rootEl = document.createElement('div');
-		rules.rulesSortedArray =  [];
+		lutesSortedArray =  [];
 	}
 
 	M.rein = function(elementReference) {
 		rootEl= elementReference;
 	}
+	
+	//check that there is no pair of rules in ruleObject, that match the same event.
+	//in this case it will be impossible to decide order of execution
+	function validateRule(selector, ruleObject) {
+		var properties  = _.keys(ruleObject);
+		var eventProperties = _.filter(properties, isValidEventSelector);
+		if (_.isEmpty(eventProperties)) return;
+		var eventsByOneTwoLevel = _.map(eventProperties, (key) => key.split(' '));
+		var events = _.flatten(eventsByOneTwoLevel);
+		var eventIndexToCount = _.countBy(events, eventName =>  _.indexOf(jqEvents, eventName) );
+		var eventIndexToCountWhereTwiceOrMore = _.pickBy(eventIndexToCount, quantity => quantity > 1 );
+		var multipleEventIndexes = _.keys(eventIndexToCountWhereTwiceOrMore);
+		var multipleEventNames = _.map(multipleEventIndexes, index => jqEvents[index]);
 
-	var rules = {
-		rulesSortedArray: []
-	};
 
-	rules.addRule = function(selector, ruleObject){
-		this.rulesSortedArray.push({
+		if (multipleEventNames && multipleEventNames.length) {
+			throw new Error( listOfRepeatingEventNames.join(' and ') + 'repeat more than once in passed rules object. They are likely to be invoked together, and Morbid will be unable to determine order. Please, break up this lute or bulk instruction in consequent ones')
+		}
+	}
+
+	function addLute(selector, ruleObject){
+		validateRule(selector, ruleObject);
+
+		lutesSortedArray.push({
 			selector,
 			ruleObject
 		});
 		
-		this.rulesSortedArray.sort((i1,i2) => {
+		lutesSortedArray.sort((i1,i2) => {
 			return SPECIFICITY.compare(i1.selector, i2.selector);
 		});
 
-		var delegatedMethods = _.pickBy(ruleObject, events.isValidEventSelector);
+		var delegatedMethods = _.pickBy(ruleObject, (value, key) => isValidEventSelector(key));
 
 		_.mapKeys(delegatedMethods, (handler, eventName) => {
-			jQuery(rootEl).on(eventName, selector, events.listener);
+			jQuery(rootEl).on(eventName, selector, listener);
 		});
 
-	}.bind(rules);
+	};
 
-	rules.getThis = function(domReference){
-		const applicableRuleObjects = _.chain(this.rulesSortedArray).filter(
-			(rO) => jQuery(domReference).is(rO.selector) ).map(rO => rO.ruleObject).value();
+	function getThis(domReference){
+		debugger;
+		const applicableLutes = _.filter(lutesSortedArray, lute => jQuery(domReference).is(lute.selector) );
+		const ruleObjects = _.map(applicableLutes, lute => lute.ruleObject)
 
-		var thisObject = _.partial(_.extend, {}).apply(window, applicableRuleObjects);
+		var thisObject = _.partial(_.extend, {}).apply(window, ruleObjects);
 		
 		//thisObject now should have actual methods with maximum specificity;
 		//TODO ADD SOME MAP UNIQUE TO DOM ELEMENT
 		return thisObject;
-	}.bind(rules);
+	}
 
-	var events = {
-		jqEvents: ['blur',
-			'focus',
-			'focusin',
-			'focusout',
-			'load',
-			'resize',
-			'scroll',
-			'unload',
-			'click',
-			'dblclick',
-			'mousedown',
-			'mouseup',
-			'mousemove',
-			'mouseover',
-			'mouseout',
-			'mouseenter',
-			'mouseleave',
-			'change',
-			'select',
-			'submit',
-			'keydown',
-			'keypress',
-			'keyup',
-			'error'],
-
-		listener : function(event) {
-			//here call our most specific method with proper binding
-			var type = event.type;
-			var to = rules.getThis(event.currentTarget);
-			if (to[event.type]) {
-				return to[event.type](event);
-			}
-			//if we got there, user has specified event name like 'click onkeyup',and we have to find a selector with substring.
-			var oneRandomMatchingEventListener = _.chain(to).pickBy((fn, sel) => {
-				return (sel.indexOf(event.type) !== -1);
-			}).toPairs().first().last().value();
-
-			return oneRandomMatchingEventListener(event);
-		},
-
-		isValidEventSelector: function(f, sel) {
-			if (sel.indexOf(' ') !=-1){
-				return true;
-			}
-
-			return events.jqEvents.includes(sel);
+	function isValidEventSelector(sel) {
+		if (sel.indexOf(' ') !=-1){
+			return true;
 		}
-	};
+
+		return jqEvents.includes(sel);
+	}
+	
+	function listener(event) {
+		//here call our most specific method with proper binding
+		var type = event.type;
+		var to = getThis(event.currentTarget);
+		if (to[event.type]) {
+			return to[event.type](event);
+		}
+		//if we got there, user has specified event name like 'click onkeyup',and we have to find a selector with substring.
+		var oneRandomMatchingEventListener = _.chain(to).pickBy((fn, sel) => {
+			return (sel.indexOf(event.type) !== -1);
+		}).toPairs().first().last().value();
+
+		return oneRandomMatchingEventListener(event);
+	}
 
 })();

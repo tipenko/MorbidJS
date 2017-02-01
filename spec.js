@@ -239,9 +239,67 @@ describe("Morbid second batch, DOM-related", function() {
 		expect(result).to.be.equal(2);
 	});
 
-	it("there is a problem with events ", () => {
-		expect(true).to.be.equal(false);
+	it("conflicting event listeners : listener of more specific selector fires, listeners of less specific are discarded", () => {
+		var a1=false,a2=false,a3=false;
+		M.lute('.child1', {
+			'click' : (event) => {
+				a1++;
+			},
+			'click onkeyup' : (event) => {
+				a2++;
+			},
+		});
+
+		M.lute('#app', {
+			'click' : (event) => {
+				a3++;
+			}
+		});
+
+		M('.child1').trigger('click');
+		expect(a3).to.be.ok();
+		expect(!a2).to.be.ok();
+		expect(!a1).to.be.ok();
 	});
+
+	it("conflicting event listeners : two conflicting listeners in one lute. Unable to decide order; throws error,requests to break bulk/lute", () => {
+		var a1=false, a2=false;
+		
+		try  {
+			M.lute('.child1', {
+				'click' : (event) => {},
+				'click onkeyup' : (event) => {} });
+		} catch( e ) {
+			var res = e;
+		}
+
+		expect(res).to.be.ok();
+	});
+
+	/*it("conflicting listeners execute in order of addition ", () => {
+		expect(false).to.be.ok();
+	});
+
+	it("stopPropagation works", () => {
+		expect(false).to.be.ok();
+	});
+
+	it("stopImmediatePropagation works", () => {
+		expect(false).to.be.ok();
+	});
+
+	it("stopImmediatePropagation works on capturing", () => {
+		expect(false).to.be.ok();
+	});
+
+	it("stopPropagation works on capturing", () => {
+		expect(false).to.be.ok();
+	});
+
+	it("correct lute merging", () => {
+		expect(false).to.be.ok();
+	});*/
+
 });
 
 
