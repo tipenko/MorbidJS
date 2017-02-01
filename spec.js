@@ -7,33 +7,33 @@ describe("Morbid first batch", function() {
 		expect(M).to.be.ok();
 	});
 
-	it("has append method", () => {
-		expect(M.append('<div id=app class=blacklist1/>')).to.be.ok();
+	it("has eke method", () => {
+		expect(M.eke('<div id=app class=blacklist1/>')).to.be.ok();
 	});
 
 	it("returns length 2 if two elements added", () => {
-		M.append('<div id=app class=blacklist1/>');
-		M.append('<div id=app class=blacklist2/>');
+		M.eke('<div id=app class=blacklist1/>');
+		M.eke('<div id=app class=blacklist2/>');
 		expect(M('div').length).to.be.equal(2);
 	});
 
 	it("returns plain for nested ", () => {
-		M.append('<div id=app class=blacklist1/>');
-		M.append('.blacklist1', '<div id=app4 class=blacklist2/>');
-		M.append('<div id=app2 class=blacklist3/>');
+		M.eke('<div id=app class=blacklist1/>');
+		M.eke('.blacklist1', '<div id=app4 class=blacklist2/>');
+		M.eke('<div id=app2 class=blacklist3/>');
 
 		expect(M('div').length).to.equal(3);
 	});
 		
 	it("allows nested construction", () => {
-		M.append('<div id=app class=blacklist1/>');
-		M.append('.blacklist1', '<div id=app class=blacklist2/>')
+		M.eke('<div id=app class=blacklist1/>');
+		M.eke('.blacklist1', '<div id=app class=blacklist2/>')
 		expect(M('.blacklist1').children().length).to.equal(1);
 	});
 
 	it("it is possible to add rule", () => {
-		M.append('<div id=app class=blacklist1/>');
-		M.rule('#app', {
+		M.eke('<div id=app class=blacklist1/>');
+		M.lute('#app', {
 			sound: () => {
 				return true;
 			}
@@ -42,15 +42,15 @@ describe("Morbid first batch", function() {
 	});
 
 	it("all methods are exposed to top", () => {
-		M.append('<div id=app class=blacklist1/>');
-		M.append('<div id=manapp class=blacklist1/>');
-		M.rule('#app', {
+		M.eke('<div id=app class=blacklist1/>');
+		M.eke('<div id=manapp class=blacklist1/>');
+		M.lute('#app', {
 			sound: () => {
 				return true;
 			}
 		});
 
-		M.rule('#manapp', {
+		M.lute('#manapp', {
 			escape: () => {
 				return true;
 			}
@@ -60,16 +60,16 @@ describe("Morbid first batch", function() {
 	});
 
 	it("you can call one method for whole collection, and some hard chain is returned", () => {
-		M.append('<div id=app class=blacklist1/>');
-		M.append('<div id=manapp class=blacklist1/>');
+		M.eke('<div id=app class=blacklist1/>');
+		M.eke('<div id=manapp class=blacklist1/>');
 
-		M.rule('#app', {
+		M.lute('#app', {
 			sound: () => {
 				return true;
 			}
 		});
 
-		M.rule('#manapp', {
+		M.lute('#manapp', {
 			escape: () => {
 				return true;
 			}
@@ -78,16 +78,16 @@ describe("Morbid first batch", function() {
 	});
 
 	it("MUST: M returns single value by default  report", () => {
-		M.append('<div id=app class=blacklist1/>');
-		M.append('<div id=manapp class=blacklist1/>');
+		M.eke('<div id=app class=blacklist1/>');
+		M.eke('<div id=manapp class=blacklist1/>');
 
-		M.rule('#app', {
+		M.lute('#app', {
 			sound: () => {
 				return 'paramparamparam';
 			}
 		});
 
-		M.rule('.blacklist1', {
+		M.lute('.blacklist1', {
 			sound: () => {
 				return true;
 			}
@@ -97,16 +97,16 @@ describe("Morbid first batch", function() {
 	});
 
 	it("MUST: M returns report if called with W ", () => {
-		M.append('<div id=app class=blacklist1/>');
-		M.append('<div id=manapp class=blacklist1/>');
+		M.eke('<div id=app class=blacklist1/>');
+		M.eke('<div id=manapp class=blacklist1/>');
 
-		M.rule('#app', {
+		M.lute('#app', {
 			sound: () => {
 				return 'paramparamparam';
 			}
 		});
 
-		M.rule('.blacklist1', {
+		M.lute('.blacklist1', {
 			sound: () => {
 				return true;
 			}
@@ -118,16 +118,16 @@ describe("Morbid first batch", function() {
 
 
 	it("method for more specific selector is applied", () => {
-		M.append('<div id=app class=blacklist1/>');
-		M.append('<div id=manapp class=blacklist1/>');
+		M.eke('<div id=app class=blacklist1/>');
+		M.eke('<div id=manapp class=blacklist1/>');
 
-		M.rule('#app', {
+		M.lute('#app', {
 			sound: () => {
 				return 'paramparamparam';
 			}
 		});
 
-		M.rule('.blacklist1', {
+		M.lute('.blacklist1', {
 			sound: () => {
 				return true;
 			}
@@ -139,10 +139,10 @@ describe("Morbid first batch", function() {
 	});
 
 	it("more complex case of specificity", () => {
-		M.append('<div id=app class=blacklist1/>');
-		M.append('<div id=manapp class=blacklist1/>');
+		M.eke('<div id=app class=blacklist1/>');
+		M.eke('<div id=manapp class=blacklist1/>');
 
-		M.rule('#app', {
+		M.lute('#app', {
 			sound: () => {
 				return 'paramparamparam';
 			}, 
@@ -151,13 +151,13 @@ describe("Morbid first batch", function() {
 			}
 		});
 
-		M.rule('.blacklist1', {
+		M.lute('.blacklist1', {
 			sound: () => {
 				return true;
 			}
 		});
 
-		M.rule('#app.blacklist1', {
+		M.lute('#app.blacklist1', {
 			sound: () => {
 				return "app";
 			}
@@ -197,7 +197,7 @@ describe("Morbid second batch, DOM-related", function() {
 	it("Morbid applies behaviours to pre-existing DOM ", () => {
 		M.control(document.getElementById('MorbidBase'));
 
-		M.rule('.child1', {
+		M.lute('.child1', {
 			test : () => {
 				return true;
 			}
@@ -210,7 +210,7 @@ describe("Morbid second batch, DOM-related", function() {
 	it("Invocation of nonexistent method does not results in exception", () => {
 		M.control(document.getElementById('MorbidBase'));
 
-		M.rule('.child1', {
+		M.lute('.child1', {
 			test : () => {
 				return true;
 			}
@@ -225,11 +225,11 @@ describe("Morbid second batch, DOM-related", function() {
 		expect(fine).to.equal(true);
 	});
 
-	it("one can assign onclick listener via rule ", () => {
+	it("one can assign onclick listener via lute ", () => {
 		M.control(document.getElementById('MorbidBase'));
 
 		var itHasChanged = false;
-		M.rule('.child1', {
+		M.lute('.child1', {
 			click : () => {
 				itHasChanged = true;
 				return true;
@@ -243,7 +243,7 @@ describe("Morbid second batch, DOM-related", function() {
 	it("event listener receives event as param", () => {
 		M.control(document.getElementById('MorbidBase'));
 
-		M.rule('.child1', {
+		M.lute('.child1', {
 			click : (event) => {
 				expect(event.type).to.be.equal('click');
 			}
@@ -255,13 +255,13 @@ describe("Morbid second batch, DOM-related", function() {
 	it("more specific listener takes precedence", () => {
 		M.control(document.getElementById('MorbidBase'));
 		var result = 0;
-		M.rule('.child1', {
+		M.lute('.child1', {
 			click : (event) => {
 				result = 1;
 			}
 		});
 
-		M.rule('#host .child1', {
+		M.lute('#host .child1', {
 			click : (event) => {
 				result = 2;
 			}
@@ -272,11 +272,11 @@ describe("Morbid second batch, DOM-related", function() {
 
 	});
 
-	it("rulebulk addition works too", () => {
+	it("bulk addition works too", () => {
 		M.control(document.getElementById('MorbidBase'));
 		var result = 0;
 
-		M.rulebulk({
+		M.bulk({
 			'.child1': {
 				click : (event) => {
 					result = 1;
@@ -291,6 +291,36 @@ describe("Morbid second batch, DOM-related", function() {
 		});
 
 		$('.child1').trigger('click');
+		expect(result).to.be.equal(2);
+	});
+
+	it("in method name we can specify space-separated multiple events", () => {
+		M.control(document.getElementById('MorbidBase'));
+		var result = 0;
+
+		M.bulk({
+			'.child1': {
+				'click keyup' : (event) => {
+					result++;
+				}
+			}
+		});
+
+		$('.child1').trigger('click').trigger('keyup');
+		expect(result).to.be.equal(2);
+	});
+
+	it("lute allows to add rule with comma-separated selectors", () => {
+		M.control(document.getElementById('MorbidBase'));
+		var result = 0;
+		M.lute('.child1, #host .child2', {
+			click : (event) => {
+				result++;
+			}
+		});
+
+		$('.child1').trigger('click');
+		$('.child2').trigger('click');
 		expect(result).to.be.equal(2);
 	});
 });

@@ -4,10 +4,6 @@
   <title>Sample Form 001</title>
 
   <style>
-  #mainForm {
-    color:gray;
-  }
-
   #mainForm.invalid {
     color:red;
   }
@@ -16,6 +12,7 @@
     display:initial;
   }
 
+  #mainForm,
   #mainForm.invalid .submitButton {
     color: gray;
   }
@@ -32,20 +29,20 @@
   <script src="https://cdn.rawgit.com/keeganstreet/specificity/2ab18ea1/specificity.js"></script>
   <script src="Morbid.js"></script>
    
-<script>
-  M.control(document.getElementById('mainApp'));
+  <script>
+    M.control(document.getElementById('mainApp'));
 
-  M.rulebulk({
-    '#mainForm' : {
-      validate: (event) => M('#mainForm input[name=firstname]').val().length>0,
-      keyup: (event) => M('#mainForm').update(),
-      update: () => M('#mainForm').toggleClass('invalid', !M('#mainForm').sole.validate()),
-    }, 
-    '#mainForm:not(.invalid) .submitButton' : {
-      click: (event) => M('#mainForm').sole.validate() && M('#mainForm').submit()
-    }
-  });
-</script>
+    M.bulk({
+      '#mainForm' : {
+        validate: (event) => M('#mainForm input[name=firstname]').val().length>0,
+        'keyup change click': (event) => M('#mainForm').update(),
+        update: () => M('#mainForm').toggleClass('invalid', !M('#mainForm').validate()),
+      }, 
+      '#mainForm:not(.invalid) .submitButton' : {
+        click: (event) => M('#mainForm').validate() && M('#mainForm').submit()
+      }
+    });
+  </script>
 
 <form id='mainForm' class="invalid">
   First name:<span class="validationMessage"> this field is required!</span> <br>

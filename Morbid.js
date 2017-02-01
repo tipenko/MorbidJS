@@ -56,19 +56,25 @@
 		return report[0].returnValue;
 	}
 
-	M.append = function(parentSelectorOrEmmetString, emmetStringIfPresent) {//not an emmet yet, but wont stuck on that now.
+	M.eke = function(parentSelectorOrEmmetString, emmetStringIfPresent) {//not an emmet yet, but wont stuck on that now.
 		if (arguments.length==1) {
 			return jQuery(rootEl).append(parentSelectorOrEmmetString);
 		} else return jQuery(parentSelectorOrEmmetString, rootEl).append(emmetStringIfPresent);
 	};
 
 	//adds new css rule. No way to delete rule yet. Maybe there should not be.
-	M.rule = function(selector, ruleObject) {
+	M.lute = function(selector, ruleObject) {
+		if (selector.indexOf(',')!==-1) {
+			var selectors = selector.split(',');
+			return _.each(selectors, (selector) => {
+				M.lute(selector, ruleObject);
+			});
+		}
 		rules.addRule(selector, ruleObject);
 	};
 
 	//adds new css rule. No way to delete rule yet. Maybe there should not be.
-	M.rulebulk = function(o) {
+	M.bulk = function(o) {
 		_.forIn(o, (ruleObject, selector) => rules.addRule(selector, ruleObject) );
 	};
 
@@ -96,7 +102,7 @@
 			return SPECIFICITY.compare(i1.selector, i2.selector);
 		});
 
-		var delegatedMethods = _.pick(ruleObject, events.jqEvents);
+		var delegatedMethods = _.pickBy(ruleObject, events.isValidEventSelector);
 
 		_.mapKeys(delegatedMethods, (handler, eventName) => {
 			jQuery(rootEl).on(eventName, selector, events.listener);
@@ -143,7 +149,25 @@
 
 		listener : function(event) {
 			//here call our most specific method with proper binding
-			rules.getThis(event.currentTarget)[event.type](event);
+			var type = event.type;
+			var to = rules.getThis(event.currentTarget);
+			if (to[event.type]) {
+				return to[event.type](event);
+			}
+			//if we got there, user has specified event name like 'click onkeyup',and we have to find a selector with substring.
+			var oneRandomMatchingEventListener = _.chain(to).pickBy((fn, sel) => {
+				return (sel.indexOf(event.type) !== -1);
+			}).toPairs().first().last().value();
+
+			return oneRandomMatchingEventListener(event);
+		},
+
+		isValidEventSelector: function(f, sel) {
+			if (sel.indexOf(' ') !=-1){
+				return true;
+			}
+
+			return events.jqEvents.includes(sel);
 		}
 	};
 
