@@ -66,18 +66,20 @@ while
 
     M('div').flush()
 
-shall return 300;
+shall return 
+        
+    300;
 
 you can see that .water has not been mentioned, and method has not been invoked. No error thrown. 
 For each DOM element got into response, the most specific method is invoked.
 There is Proxies under the hood, so invoking missing method is perfectly legal and causes no exception.
  
 ### Events #
-you can specify the following words as method names, and they will be fed to jQuery.on:
+You can specify the following words as method names, and they will be fed to jQuery.on:
 
     blur, focus, focusin, focusout, load, resize, scroll, unload, click, dblclick, mousedown, mouseup, mousemove, mouseover, mouseout, mouseenter, mouseleave, change, select, submit, keydown, keypress, keyup, error
 
-This works just as you expect.
+This works almost fine. Today one random listener is invoked, but we will fix it.
 
 ### Browser support #
 Limited by Proxy API. Won't work in IE 11.
@@ -87,9 +89,19 @@ Limited by Proxy API. Won't work in IE 11.
 MorbidJS is to create something you need extremely fast and small. If you have a team and a year-long project, consider something else. If you need a small widget to display in iframe - hello!
 On the latter: It is slow, but it works. DOM storage is expensive, this object calculation is too. I will take care of this later.
 
-### Commandments ###
+### Commandments for brave who use Morbid for their cause###
 10 YOU MUST STORE BUSINESS INSTANCES IN CSS-ACCESSIBLE WAY (IN DOM, VISIBLE OR NOT) AT ALL COSTS;
 
 20 USE M(SELECTOR) TO ADDRESS EVERYTHING EVERYTIME. PASSING REFERENCES IS HERESY;
 
 30 USE INHERITANCE INSTEAD IF(). USE M() INSTEAD LOOPS() 
+
+
+### Commandments for those who write Morbid ###
+00 UNIT TESTS
+
+10 API IS NOT EXTENDED UNTIL THERE'S AN APPLICATION WHICH NEEDS IT
+
+20 REFACTORING IS ALWAYS WELCOME
+
+30 DONT CARE ABOUT SPEED, MEMORY CONSUMPTION AND MODULARITY UNTIL IT'S TIME.
