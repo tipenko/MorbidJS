@@ -110,8 +110,17 @@ String, number and date values are to be stored as discrete spans\divs (and acce
 
 Collections must be stored as ul>li or else, but every collection item must be separate DOM element and be nested exactly in item with meaningful class or id.
 
+### Javascript consideration #
+This object: in progress
+
+Event methods: do not use stopPropagation() or stopImmediatePropagation()
+
+Don't create objects with logic. Logic must be Morbid.
+
 ### Browser support #
 Limited by Proxy API. Won't work in IE 11.
+
+
 
 ### Architecture. Reusability. Modularity. Design. Performance ###
 MorbidJS is to create something you need extremely fast and small. If you have a team and a year-long project, consider something else. If you need a small widget to display in iframe - hello!
@@ -136,3 +145,12 @@ On the latter: It is slow, but it works. DOM storage is expensive, this object c
 20 REFACTORING IS ALWAYS WELCOME
 
 30 DONT CARE ABOUT SPEED, MEMORY CONSUMPTION AND MODULARITY UNTIL IT'S TIME.
+
+### Embark and endeavour ###
+
+I deeply believe that Morbid may become the face of frontend in next few years.
+
+I desperately need help.
+
+If you have time and think you can help - be it renaming and adding unit test, correcting mistakes in this document, writing rule debugger, css-like syntax translator or else - 
+contact founder by gmail. Adress is same as github id @gmail.com
