@@ -95,14 +95,19 @@ If two rules have the same specificity and declare one method or event, first ad
 Same as JQuery, Morbid used bubbling-only model. StopImmediatePropagation this time has no difference with stopPropagation.
 If you love capturing and don't know how to deal without it, remember what Morbid is. You have unlimited power of CSS selectors from now on. 
 
-Unlike methods, events add up.
+Events are not added up. Two event listeners with same specifity cannot exist in Morbid.
 
-### Where do i store data? #
+### Where do I store data? #
 In DOM.
 
 If your app is simple, it may be fine to store data exactly where they are displayed. If not, store it in invisible body>div.#b (b for business)
+
 Performance aside, we see one bad thing: you may need to visuall display business item on screen twice or more, and that's not nice duplication. For now, you have to deal with it.
+
+
 String, number and date values are to be stored as discrete spans\divs (and accessed via #b .account>.phonenumber) or as attributes.
+
+
 Collections must be stored as ul>li or else, but every collection item must be separate DOM element and be nested exactly in item with meaningful class or id.
 
 ### Browser support #
@@ -110,6 +115,7 @@ Limited by Proxy API. Won't work in IE 11.
 
 ### Architecture. Reusability. Modularity. Design. Performance ###
 MorbidJS is to create something you need extremely fast and small. If you have a team and a year-long project, consider something else. If you need a small widget to display in iframe - hello!
+
 On the latter: It is slow, but it works. DOM storage is expensive, this object calculation is too. I will take care of this later.
 
 ### Commandments for brave who use Morbid for their cause###
