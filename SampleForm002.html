@@ -1,0 +1,275 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Sample Form 002</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body id="mainApp">
+  <script src="https://cdn.rawgit.com/jquery/jquery/2.1.4/dist/jquery.min.js"></script>
+  <script src="https://cdn.rawgit.com/lodash/lodash/4.17.4/dist/lodash.js"></script>
+  <script src="https://cdn.rawgit.com/keeganstreet/specificity/2ab18ea1/specificity.js"></script>
+  <script src="Morbid.js"></script>
+   
+  <script>
+    /*M.rein(document.getElementById('mainApp'));
+
+    M.bulk({
+      '#mainForm' : {
+        validate: (event) => M('#mainForm input[name=firstname]').val().length>0,
+        'keyup change click': (event) => M('#mainForm').update(),
+        update: () => M('#mainForm').toggleClass('invalid', !M('#mainForm').validate()),
+      }, 
+      '#mainForm:not(.invalid) .submitButton' : {
+        click: (event) => M('#mainForm').validate() && M('#mainForm').submit()
+      }
+    });*/
+  </script>
+
+
+
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Morbid test app</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right">
+            <div class="form-group">
+              <input type="text" placeholder="Email" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="password" placeholder="Password" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">Sign in</button>
+          </form>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Morbid test form.</h1>
+        <p>Here is a test form you can open to play with. It is writen on Morbid. See page code. </p>
+        <!--<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more »</a></p>-->
+      </div>
+    </div>
+
+    <!--<div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Heading</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+        </div>
+        <div class="col-md-4">
+          <h2>Heading</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+          <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+       </div>
+        <div class="col-md-4">
+          <h2>Heading</h2>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+        </div>
+      </div>-->
+
+
+      <form class="form-horizontal">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Form Name</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="fn">First name</label>  
+  <div class="col-md-4">
+  <input id="fn" name="fn" type="text" placeholder="first name" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="ln">Last name</label>  
+  <div class="col-md-4">
+  <input id="ln" name="ln" type="text" placeholder="last name" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="cmpny">Company</label>  
+  <div class="col-md-4">
+  <input id="cmpny" name="cmpny" type="text" placeholder="company" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="email">Email</label>  
+  <div class="col-md-4">
+  <input id="email" name="email" type="text" placeholder="email" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="add1">Address 1</label>  
+  <div class="col-md-4">
+  <input id="add1" name="add1" type="text" placeholder="" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="add2">Address 2</label>  
+  <div class="col-md-4">
+  <input id="add2" name="add2" type="text" placeholder="" class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="city">City</label>  
+  <div class="col-md-4">
+  <input id="city" name="city" type="text" placeholder="city" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="zip">Zip Code</label>  
+  <div class="col-md-4">
+  <input id="zip" name="zip" type="text" placeholder="Zip Code" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="ctry">Country</label>  
+  <div class="col-md-4">
+  <input id="ctry" name="ctry" type="text" placeholder="Country" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="phone">Text InputPhone</label>  
+  <div class="col-md-4">
+  <input id="phone" name="phone" type="text" placeholder="Phone#" class="form-control input-md" required="">
+    
+  </div>
+</div>
+
+<!-- Multiple Radios (inline) -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="Training">Would you like to attend our Networking Reception on September 3, 2015?</label>
+  <div class="col-md-4"> 
+    <label class="radio-inline" for="Training-0">
+      <input type="radio" name="Training" id="Training-0" value="yes" checked="checked">
+      Yes
+    </label> 
+    <label class="radio-inline" for="Training-1">
+      <input type="radio" name="Training" id="Training-1" value="no">
+      No
+    </label>
+  </div>
+</div>
+
+<!-- Multiple Radios (inline) -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="Networking_Reception">Would you like to attend our Technical Product Update Session on September 4, 2015?</label>
+  <div class="col-md-4"> 
+    <label class="radio-inline" for="Networking_Reception-0">
+      <input type="radio" name="Networking_Reception" id="Networking_Reception-0" value="meet_yes" checked="checked">
+      Yes
+    </label> 
+    <label class="radio-inline" for="Networking_Reception-1">
+      <input type="radio" name="Networking_Reception" id="Networking_Reception-1" value="meet_no">
+      No
+    </label>
+  </div>
+</div>
+
+<!-- Select Basic -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="selectbasic">Select Basic</label>
+  <div class="col-md-4">
+    <select id="selectbasic" name="selectbasic" class="form-control input-md">
+      <option>Option one</option>
+      <option>Option two</option>
+    </select>
+  </div>
+</div>
+
+
+<!-- Multiple Radios (inline) -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="Dinner">Would you like to attend our Networking Dinner on September 4, 2015?</label>
+  <div class="col-md-4"> 
+    <label class="radio-inline" for="Dinner-0">
+      <input type="radio" name="Dinner" id="Dinner-0" value="dinner_yes" checked="checked">
+      Yes
+    </label> 
+    <label class="radio-inline" for="Dinner-1">
+      <input type="radio" name="Dinner" id="Dinner-1" value="dinner_no">
+      No
+    </label>
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="submit"></label>
+  <div class="col-md-4">
+    <button id="submit" name="submit" class="btn btn-primary">SUBMIT</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+
+
+
+
+
+      <hr>
+
+      <footer>
+        <p>© 2017 Morbid team.</p>
+      </footer>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+  
+
+</body>
+
+</body>
+</html>

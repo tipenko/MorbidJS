@@ -97,9 +97,15 @@ If you love capturing and don't know how to deal without it, remember what Morbi
 
 Unlike methods, events add up.
 
+### Where do i store data? #
+In DOM.
+If your app is simple, it may be fine to store data exactly where they are displayed. If not, store it in invisible body>div.#b
+Performance aside, we see one bad thing: you may need to display business item twice. For now, you have to deal with it.
+String, number and date values are to be stored as discrete spans\divs (and accessed via #b .account>.phonenumber) or as attributes.
+Collections must be stored as ul>li or else, but every collection item must be separate DOM element and be nested exactly in item with meaningful class or id.
+
 ### Browser support #
 Limited by Proxy API. Won't work in IE 11.
-
 
 ### Architecture. Reusability. Modularity. Design. Performance ###
 MorbidJS is to create something you need extremely fast and small. If you have a team and a year-long project, consider something else. If you need a small widget to display in iframe - hello!
