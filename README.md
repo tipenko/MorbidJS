@@ -112,6 +112,8 @@ On the latter: It is slow, but it works. DOM storage is expensive, this object c
 
 30 USE INHERITANCE INSTEAD IF(). USE M() INSTEAD LOOPS() 
 
+40 DO NOT USE METHOD IF METHOD WITH SAME NAME IS PRESENT IN JQUERY
+
 
 ### Commandments for those who write Morbid ###
 00 UNIT TESTS

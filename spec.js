@@ -1,4 +1,4 @@
-describe("Morbid second batch, DOM-related", function() {
+describe("Morbid", function() {
 	beforeEach(()=>{
 		M.purge();
 		$('body').append('<div id=MorbidBase/>');
@@ -366,7 +366,7 @@ describe("Morbid second batch, DOM-related", function() {
 	
 		expect(M('#app').closest).to.be.ok();
 		var a = M('#app').closest('#MorbidBase').find('span').fun();
-		expect(M('#app').closest('#MorbidBase').find('span').length).to.be.ok();
+			expect(M('#app').closest('#MorbidBase').find('span').length).to.be.ok();
 		expect(a).to.be.ok();
 	});
 
