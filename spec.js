@@ -355,6 +355,21 @@ describe("Morbid second batch, DOM-related", function() {
 		expect(M('#app').closest('#MorbidBase').fun()=="fun").to.be.ok();
 	});
 
+	it("Morbid exposes jquery methods wrapped in Morbid for single results, and does that not once", () => {
+		var clickWork = false;
+
+		M.lute('.childall', {
+			fun : (event) => {
+				return 'fun';
+			}
+		});
+	
+		expect(M('#app').closest).to.be.ok();
+		var a = M('#app').closest('#MorbidBase').find('span').fun();
+		//expect(M('#app').closest('#MorbidBase').find('span').length).to.be.ok();
+		expect(a).to.be.ok();
+	});
+
 });
 
 

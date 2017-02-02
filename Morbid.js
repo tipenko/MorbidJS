@@ -58,7 +58,6 @@
 				if (fs[name]) {
 					if (typeof fs[name]=='function') {
 						return function(a) {
-							debugger;
 							//return M( (fs[name]).apply(fs, arguments); ) 
 							return M(fs[name].apply(fs, arguments));
 						}
