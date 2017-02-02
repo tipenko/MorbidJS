@@ -99,8 +99,9 @@ Unlike methods, events add up.
 
 ### Where do i store data? #
 In DOM.
-If your app is simple, it may be fine to store data exactly where they are displayed. If not, store it in invisible body>div.#b
-Performance aside, we see one bad thing: you may need to display business item twice. For now, you have to deal with it.
+
+If your app is simple, it may be fine to store data exactly where they are displayed. If not, store it in invisible body>div.#b (b for business)
+Performance aside, we see one bad thing: you may need to visuall display business item on screen twice or more, and that's not nice duplication. For now, you have to deal with it.
 String, number and date values are to be stored as discrete spans\divs (and accessed via #b .account>.phonenumber) or as attributes.
 Collections must be stored as ul>li or else, but every collection item must be separate DOM element and be nested exactly in item with meaningful class or id.
 
