@@ -18,25 +18,25 @@ This is an experiment. I want to create framework with inheritance similar to CS
 That's it. This may get ugly soon, but i want to see it myself.
 
 ### Why? #
-- Conditions and loops may turn out to be not necessary anymore;
-- Small size of methods;
+- Conditions and loops may turn out not to be not necessary anymore;
+- Smaller methods;
 - Faster development, smaller and cleaner code. Or not!
 - Something funny i can't foresee yet.
 
-### Which method or property takes precedence?##
+### Which method takes precedence?##
 Dig [CSS Specificity](https://developer.mozilla.org/en/docs/Web/CSS/Specificity), see [calculator](https://specificity.keegan.st/) here.
 
 ### How hard? #
-- is based on JQuery and lodash, jquery methods are exposed in M response;
+- it is based on JQuery and lodash, JQuery methods are exposed in M response;
 - no backend with build processes required;
-- is supposed to be easy and lightweight.
+- it is supposed to be easy and lightweight.
 
 ### Data Model #
 Morbid is backed by jQuery. This is not forever.
 
     M.append('<div id=app class=blacklist2/>')
 
-*div#app.blacklist2* is created after this call, as a child of detached root element. This element will have behaviours provided by css-like behaviour sheets.
+*div#app.blacklist2* is created after this call, as a child of detached root element. This element will have behaviour set by css-like behaviour sheets.
 
 Actual visible DOM may well act as model.
 
@@ -79,43 +79,44 @@ All JQuery methods are exposed and infinitely chained through Morbid decorator, 
     
     M('#app').closest('#MorbidBase').find('span').fun()
 
-is absolutely valid and shall return result of 'fun' method
+is absolutely valid and shall return the result of 'fun' method
  
 ### "super" equivalent #
 Is not implemented yet. Maybe it should not be.
 
-### Events model and  rule conflict resolution#
+### Events model and rule conflict resolution#
 You can specify the following words as method names, and they will be fed to jQuery.on:
 
     blur, focus, focusin, focusout, load, resize, scroll, unload, click, dblclick, mousedown, mouseup, mousemove, mouseover, mouseout, mouseenter, mouseleave, change, select, submit, keydown, keypress, keyup, error
 
 All other keys are treated as methods and can be invoked through M(selector).
-If two rules have the same specificity and declare one method or event, first added will be discarded.
+If two rules have the same specificity and declare one method or event, the first added method or event will be overwritten.
 
-Same as JQuery, Morbid used bubbling-only model. StopImmediatePropagation this time has no difference with stopPropagation.
+Same as JQuery, Morbid used bubbling-only event model. StopImmediatePropagation this time has no difference with stopPropagation.
 If you love capturing and don't know how to deal without it, remember what Morbid is. You have unlimited power of CSS selectors from now on. 
 
-Events are not added up. Two event listeners with same specifity cannot exist in Morbid.
+Events are not added up. Two event listeners with same specificity cannot exist in Morbid.
 
 ### Where do I store data? #
 In DOM.
 
-If your app is simple, it may be fine to store data exactly where they are displayed. If not, store it in invisible body>div.#b (b for business)
+If your app is simple, it may be fine to store data exactly where it is displayed. If not, store it in invisible body>div.#b (b for business)
 
-Performance aside, we see one bad thing: you may need to visuall display business item on screen twice or more, and that's not nice duplication. For now, you have to deal with it.
+Performance aside, we see one bad thing: you may need to visually display business item on screen twice or more, and that's not nice. For now, you have to deal with it.
 
 
 String, number and date values are to be stored as discrete spans\divs (and accessed via #b .account>.phonenumber) or as attributes.
 
 
-Collections must be stored as ul>li or else, but every collection item must be separate DOM element and be nested exactly in item with meaningful class or id.
+Collections must be stored as ul>li or else, but every collection item must be separate DOM element and be nested exactly in DOM element with meaningful class or id.
 
 ### Javascript consideration #
 This object: in progress
 
 Event methods: do not use stopPropagation() or stopImmediatePropagation()
 
-Don't create objects with logic. Logic must be Morbid.
+Avoid creating plain javascript objects with logic. Morbid handles logic.
+
 
 ### Browser support #
 Limited by Proxy API. Won't work in IE 11.
@@ -123,11 +124,13 @@ Limited by Proxy API. Won't work in IE 11.
 
 
 ### Architecture. Reusability. Modularity. Design. Performance ###
-MorbidJS is to create something you need extremely fast and small. If you have a team and a year-long project, consider something else. If you need a small widget to display in iframe - hello!
+MorbidJS is to create something you need extremely fast and small. 
 
-On the latter: It is slow, but it works. DOM storage is expensive, this object calculation is too. I will take care of this later.
+If you have a team and a year-long project, consider something else. If you need a small widget to display in iframe - hello!
 
-### Commandments for brave who use Morbid for their cause###
+Performance-wise: It is slow, but it works. DOM storage is expensive, as well as this object calculation. I will take care of this later.
+
+### Commandments for the brave who use Morbid for their cause###
 10 YOU MUST STORE BUSINESS INSTANCES IN CSS-ACCESSIBLE WAY (IN DOM, VISIBLE OR NOT) AT ALL COSTS;
 
 20 USE M(SELECTOR) TO ADDRESS EVERYTHING EVERYTIME. PASSING REFERENCES IS HERESY;
