@@ -78,12 +78,18 @@ There is Proxies under the hood, so invoking missing method is perfectly legal a
 ### "super" equivalent #
 Is not implemented yet. Maybe it should not be.
 
-### Events #
+### Events model and  rule conflict resolution#
 You can specify the following words as method names, and they will be fed to jQuery.on:
 
     blur, focus, focusin, focusout, load, resize, scroll, unload, click, dblclick, mousedown, mouseup, mousemove, mouseover, mouseout, mouseenter, mouseleave, change, select, submit, keydown, keypress, keyup, error
 
-This works almost fine. Today one random listener is invoked in case of conflict (both 'click onkeyup' and 'click' in one selector) but we will fix it soon.
+All other keys are treated as methods and can be invoked through M(selector).
+If two rules have the same specificity and declare one method or event, first added will be discarded.
+
+Same as JQuery, Morbid used bubbling-only model. StopImmediatePropagation this time has no difference with stopPropagation.
+If you love capturing and don't know how to deal without it, remember what Morbid is. You have unlimited power of CSS selectors from now on. 
+
+Unlike methods, events add up.
 
 ### Browser support #
 Limited by Proxy API. Won't work in IE 11.

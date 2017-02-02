@@ -1,7 +1,7 @@
 (function(){
 
 	var rootEl = document.createElement('div');
-	var lutesSortedArray =  [];
+	var lutesSortedArray = [];
 
 	var jqEvents =  ['blur',
 			'focus',
@@ -28,8 +28,10 @@
 			'keyup',
 			'error'];
 
-	M = function(selector){
-		var foundSet = jQuery(selector, rootEl);
+	M = function(selectorOrJQueryObject){
+		var foundSet = selectorOrJQueryObject.context ? selectorOrJQueryObject :  jQuery(selectorOrJQueryObject, rootEl);
+
+		//if selectorOrJQueryObject is jqueryObject, we should wrap it 
 
 		function run(methodName){
 			var meaningfulArguments = Array.prototype.slice.call(arguments); //arguments passed from caller
@@ -53,8 +55,20 @@
 
 		var soleWrapper = new Proxy(foundSet, {
 			get: (fs, name) => {
-				if (fs[name]) return fs[name];
-				if (name=="W") return multipleWrapper;
+				if (fs[name]) {
+					if (typeof fs[name]=='function') {
+						return function(a) {
+							debugger;
+							//return M( (fs[name]).apply(fs, arguments); ) 
+							return M(fs[name].apply(fs, arguments));
+						}
+					} else {
+						return fs[name];
+					}
+					return fs[name];
+				}
+
+				if (name == "W") return multipleWrapper;
 				//we have a name of a method. we have to iterate over collection 
 				return () => {
 						var a = Array.prototype.slice.call(arguments);
@@ -121,9 +135,8 @@
 		var multipleEventIndexes = _.keys(eventIndexToCountWhereTwiceOrMore);
 		var multipleEventNames = _.map(multipleEventIndexes, index => jqEvents[index]);
 
-
 		if (multipleEventNames && multipleEventNames.length) {
-			throw new Error( multipleEventNames.join(' and ') + 'repeat more than once in passed rules object. They are likely to be invoked together, and Morbid will be unable to determine order. Please, break up this lute or bulk instruction in consequent ones')
+			throw new Error( multipleEventNames.join(' and ') + 'repeat more than once in passed rules object. This has no sense and behaviour is unpredictable. Remove one.')
 		}
 	}
 
@@ -132,14 +145,17 @@
 
 		lutesSortedArray.push({
 			selector,
-			ruleObject
+			ruleObject,
+			number: lutesSortedArray.length
 		});
 		
 		lutesSortedArray.sort((i1,i2) => {
-			return SPECIFICITY.compare(i1.selector, i2.selector);
+			var specificityComparison = SPECIFICITY.compare(i1.selector, i2.selector);
+			if (specificityComparison!=0) return specificityComparison;
+			return i1.number - i2.number;
 		});
 
-		var delegatedMethods = _.pickBy(ruleObject, (value, key) => isValidEventSelector(key));
+		var delegatedMethods = _.pickBy(ruleObject, (__, key) => isValidEventSelector(key));
 
 		_.mapKeys(delegatedMethods, (handler, eventName) => {
 			jQuery(rootEl).on(eventName, selector, listener);
@@ -149,6 +165,8 @@
 
 	function getThis(domReference){
 		const applicableLutes = _.filter(lutesSortedArray, lute => jQuery(domReference).is(lute.selector) );
+		
+		//need to get topmost lutes with same ids.
 		const ruleObjects = _.map(applicableLutes, lute => lute.ruleObject)
 
 		var thisObject = _.partial(_.extend, {}).apply(window, ruleObjects);

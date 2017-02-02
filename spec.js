@@ -240,14 +240,11 @@ describe("Morbid second batch, DOM-related", function() {
 	});
 
 	it("conflicting event listeners : listener of more specific selector fires, listeners of less specific are discarded", () => {
-		var a1=false,a2=false,a3=false;
+		var a1=false,a3=false;
 		M.lute('.child1', {
 			'click' : (event) => {
 				a1++;
-			},
-			'click onkeyup' : (event) => {
-				a2++;
-			},
+			}
 		});
 
 		M.lute('#app', {
@@ -256,9 +253,8 @@ describe("Morbid second batch, DOM-related", function() {
 			}
 		});
 
-		M('.child1').trigger('click');
+		var retval = M('.child1').trigger('click');
 		expect(a3).to.be.ok();
-		expect(!a2).to.be.ok();
 		expect(!a1).to.be.ok();
 	});
 
@@ -276,29 +272,88 @@ describe("Morbid second batch, DOM-related", function() {
 		expect(res).to.be.ok();
 	});
 
-	/*it("conflicting listeners execute in order of addition ", () => {
-		expect(false).to.be.ok();
+	it("Morbid effectively merges two consequent lutes with same selectors ", () => {
+		var clickWork = false;
+		M.lute('#app', {
+			sound : (event) => {
+				return 2;
+			}
+		});
+
+		M.lute('#app', {
+			'click' : (event) => {
+				clickWork= true;
+			}
+		});
+		M('#app').trigger('click');
+
+		expect(M('#app').sound()==2).to.be.ok();
+		expect(clickWork).to.be.ok();
 	});
 
-	it("stopPropagation works", () => {
-		expect(false).to.be.ok();
+	it("Morbid overrides first added method if methods duplicate ", () => {
+		var clickWork = false;
+		M.lute('#app', {
+			sound : (event) => {
+				return 2;
+			}
+		});
+
+		M.lute('#app', {
+			sound : (event) => {
+				return 3;
+			}
+		});
+		expect(M('#app').sound()==3).to.be.ok();
 	});
 
-	it("stopImmediatePropagation works", () => {
-		expect(false).to.be.ok();
+	it("Morbid overrides first added method if selectors are different but specificty is same, part 1 ", () => {
+		var clickWork = false;
+		M.lute('.child1', {
+			sound : (event) => {
+				return 2;
+			}
+		});
+
+		M.lute('.childall', {
+			sound : (event) => {
+				return 3;
+			}
+		});
+		expect(M('#app').sound()==3).to.be.ok();
 	});
 
-	it("stopImmediatePropagation works on capturing", () => {
-		expect(false).to.be.ok();
+	it("Morbid overrides first added method if selectors are different but specificty is same, part 2 ", () => {
+		var clickWork = false;
+
+		M.lute('.childall', {
+			sound : (event) => {
+				return 3;
+			}
+		});
+
+		M.lute('.child1', {
+			sound : (event) => {
+				return 2;
+			}
+		});
+		expect(M('#app').sound()==2).to.be.ok();
 	});
 
-	it("stopPropagation works on capturing", () => {
-		expect(false).to.be.ok();
-	});
 
-	it("correct lute merging", () => {
-		expect(false).to.be.ok();
-	});*/
+	it("Morbid exposes jquery methods wrapped in Morbid for single results", () => {
+		var clickWork = false;
+
+		M.lute('#MorbidBase', {
+			fun : (event) => {
+				return 'fun';
+			}
+		});
+	
+		expect(M('#app').closest).to.be.ok();
+		expect(M('#app').closest('#MorbidBase')).to.be.ok();
+		expect(M('#app').closest('#MorbidBase').fun()=="fun").to.be.ok();
+	});
 
 });
 
