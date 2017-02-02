@@ -74,6 +74,12 @@ shall return
 you can see that .water has not been mentioned, and method has not been invoked. No error thrown. 
 For each DOM element got into response, the most specific method is invoked.
 There is Proxies under the hood, so invoking missing method is perfectly legal and causes no exception.
+
+All JQuery methods are exposed and infinitely chained through Morbid decorator, so 
+    
+    M('#app').closest('#MorbidBase').find('span').fun()
+
+is absolutely valid and shall return result of 'fun' method
  
 ### "super" equivalent #
 Is not implemented yet. Maybe it should not be.
