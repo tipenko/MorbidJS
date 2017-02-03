@@ -22,15 +22,16 @@ describe("Morbid is M() and does following: ", function() {
 		expect(M).to.be.ok();
 	});
 
-	it("It's api is rather small and contains as little as four static methods", () => {
-		expect(M.rein).to.be.ok();
-		expect(M.lute).to.be.ok();
-		expect(M.bulk).to.be.ok();
-		expect(M.wipe).to.be.ok();
-		expect(Object.getOwnPropertyNames(M).length==9).to.be.ok();// that is our 4 plus usual ones
-		//["length", "name", "arguments", "caller", "prototype", "lute", "bulk", "wipe", "rein"]
+	it("It's api is rather small and contains as little as four static methods"
+		, () => {
+			expect(M.rein).to.be.ok();
+			expect(M.lute).to.be.ok();
+			expect(M.bulk).to.be.ok();
+			expect(M.wipe).to.be.ok();
+			expect(Object.getOwnPropertyNames(M).length == 9).to.be.ok(); // that is our 4 plus usual ones
+			//["length", "name", "arguments", "caller", "prototype", "lute", "bulk", "wipe", "rein"]
 
-	});
+		});
 
 	it(
 		"It acts as a wrapper over good old jQuery, but you won't regret reading further. I promise you that."
@@ -197,104 +198,6 @@ describe("Morbid is M() and does following: ", function() {
 			expect(fine).to.equal(true);
 		});
 
-	it("On events specification and handling: ", () => {
-		it("one can assign jquery event listener via lute ", () => {
-			var itHasChanged = false;
-			M.lute('.child1', {
-				click: () => {
-					itHasChanged = true;
-					return true;
-				}
-			});
-
-			$('.child1').trigger('click');
-			expect(itHasChanged).to.be.ok();
-		});
-
-		it("event listener receives event as param", () => {
-			M.lute('.child1', {
-				click: (event) => {
-					expect(event.type).to.be.equal('click');
-				}
-			});
-
-			$('.child1').trigger('click');
-		});
-
-		it(
-			"an event listener described in rule with higher specificity, overrides the one lower. They are not added up. e.stopImmediatePropagation in Morbid is same as e.stopPropagation() "
-			, () => {
-				var result = 0;
-				M.lute('.child1', {
-					click: (event) => {
-						result = 1;
-					}
-				});
-
-				M.lute('#host .child1', {
-					click: (event) => {
-						result = 2;
-					}
-				});
-
-				$('.child1').trigger('click');
-				expect(result).to.be.equal(2);
-			});
-
-		it("in rule you can specify multiple events as space-separated string", () => {
-			var result = 0;
-
-			M.bulk({
-				'.child1': {
-					'click keyup': (event) => {
-						result++;
-					}
-				}
-			});
-
-			$('.child1').trigger('click').trigger('keyup');
-			expect(result).to.be.equal(2);
-		});
-
-		/*it("conflicting event listeners : listener of more specific selector fires, listeners of less specific are discarded", () => {
-			var a1=false,a3=false;
-			M.lute('.child1', {
-				'click' : (event) => {
-					a1++;
-				}
-			});
-
-			M.lute('#app', {
-				'click' : (event) => {
-					a3++;
-				}
-			});
-
-			var retval = M('.child1').trigger('click');
-			expect(a3).to.be.ok();
-			expect(!a1).to.be.ok();
-		});*/
-
-		it(
-			"if there is an event names conflict, Morbid will be unable to decide which one of listeners takes precedence, and will throw an exception. Good thing is that you get that one instantly."
-			, () => {
-				var a1 = false
-					, a2 = false;
-
-				try {
-					M.lute('.child1', {
-						'click': (event) => {}
-						, 'click onkeyup': (event) => {}
-					});
-				} catch (e) {
-					var res = e;
-				}
-
-				expect(res).to.be.ok();
-			});
-
-	});
-
 
 
 	it("lute allows to add rule with comma-separated selectors", () => {
@@ -390,6 +293,126 @@ describe("Morbid is M() and does following: ", function() {
 
 });
 
+describe("Events specification and handling: ", () => {
+
+	beforeEach(() => {
+		M.wipe();
+		$('body').append('<div id=MorbidBase/>');
+		$('#MorbidBase').html(
+			`
+			<div id="host">
+				<span id=app class="child1 childall"/>
+				<span id=manapp class="child2 childall"/>
+			</div>
+
+		`
+		).hide();
+		M.rein(document.getElementById('MorbidBase'));
+	});
+
+	afterEach(() => {
+		$('#MorbidBase').remove();
+	});
+
+
+
+	it("Event listener can be added with Morbid as well as method.. ", () => {
+		var itHasChanged = false;
+		M.lute('.child1', {
+			click: () => {
+				itHasChanged = true;
+				return true;
+			}
+		});
+
+		$('.child1').trigger('click');
+		expect(itHasChanged).to.be.ok();
+	});
+
+	it("..and for event as well.", () => {
+		M.lute('.child1', {
+			click: (event) => {
+				expect(event.type).to.be.equal('click');
+			}
+		});
+
+		$('.child1').trigger('click');
+	});
+
+	it(
+		"an event listener described in lute with higher specificity, overrides the one lower. They are not added up. e.stopImmediatePropagation in Morbid is same as e.stopPropagation()."
+		, () => {
+			var result = 0;
+			M.lute('.child1', {
+				click: (event) => {
+					result = 1;
+				}
+			});
+
+			M.lute('#host .child1', {
+				click: (event) => {
+					result = 2;
+				}
+			});
+
+			$('.child1').trigger('click');
+			expect(result).to.be.equal(2);
+		});
+
+	it("In rule you can specify multiple events as space-separated string", () => {
+		var result = 0;
+
+		M.bulk({
+			'.child1': {
+				'click keyup': (event) => {
+					result++;
+				}
+			}
+		});
+
+		$('.child1').trigger('click').trigger('keyup');
+		expect(result).to.be.equal(2);
+	});
+
+	/*it("conflicting event listeners : listener of more specific selector fires, listeners of less specific are discarded", () => {
+		var a1=false,a3=false;
+		M.lute('.child1', {
+			'click' : (event) => {
+				a1++;
+			}
+		});
+
+		M.lute('#app', {
+			'click' : (event) => {
+				a3++;
+			}
+		});
+
+		var retval = M('.child1').trigger('click');
+		expect(a3).to.be.ok();
+		expect(!a1).to.be.ok();
+	});*/
+
+	it(
+		"if there is an event names conflict, Morbid will be unable to decide which one of listeners takes precedence, and will throw an exception. Good thing is that you get that one instantly after M.lute/M.bulk."
+		, () => {
+			var a1 = false
+				, a2 = false;
+
+			try {
+				M.lute('.child1', {
+					'click': (event) => {}
+					, 'click onkeyup': (event) => {}
+				});
+			} catch (e) {
+				var res = e;
+			}
+
+			expect(res).to.be.ok();
+		});
+
+});
+
 
 describe("Dom traverse and manipulation ", () => {
 	beforeEach(() => {
@@ -428,7 +451,7 @@ describe("Dom traverse and manipulation ", () => {
 		});
 
 	it(
-		"if JQuery method is dom manipulation or traverse method, it is wrapped in Morbid too. Chain does not breaks, it is always M and then JQuery"
+		"if JQuery method is dom manipulation or traverse method, it is wrapped in Morbid too. Chain does not breaks up until simple value is returned, it is always JQuery and then M while you are calling traverse methods."
 		, () => {
 			var clickWork = false;
 
@@ -511,27 +534,31 @@ describe("This object calculation", function() {
 
 
 
-	it("This object contains all JQuery methods. In fact, those of JQuery are returned instead of yours in case of name conflict. ", () => {
-		M.lute('#app', {
-			'fun': function() {
-				return this.find ? true : false;
-			}
+	it(
+		"This object contains all JQuery methods. In fact, those of JQuery are returned instead of yours in case of name conflict. "
+		, () => {
+			M.lute('#app', {
+				'fun': function() {
+					return this.find ? true : false;
+				}
+			});
+
+			expect(M('#app').fun()).to.be.ok();
 		});
 
-		expect(M('#app').fun()).to.be.ok();
-	});
+	it(
+		"JQuery.closest() is also exposed through this, and it especially nice to use "
+		, () => {
+			M.lute('#app', {
+				'fun': function() {
+					return this.closest ? true : false;
+				}
+			});
 
-	it("JQuery.closest() is also exposed through this, and it especially nice to use ", () => {
-		M.lute('#app', {
-			'fun': function() {
-				return this.closest ? true : false;
-			}
+			expect(M('#app').fun()).to.be.ok();
 		});
 
-		expect(M('#app').fun()).to.be.ok();
-	});
 
-	
 
 	it(
 		"All above works the same way if you pass function reference as method "
@@ -600,7 +627,7 @@ describe("Upcoming tasks. These tests are supposed to fail", function() {
 
 		});
 
-		it(
+	it(
 		"full execution report contains useful methods like &&all or lodash chain applied"
 		, () => {
 			expect(false).to.be.ok();
