@@ -620,7 +620,7 @@ describe("Upcoming tasks. These tests are supposed to fail", function() {
 	});
 
 	it(
-		"this object stays fresh all method long. If you change semantics, new methods become available, olds become unavailable"
+		"this object stays fresh all method long. If you change current dom element class in the middle, new methods become available, olds become unavailable"
 		, () => {
 			expect(false).to.be.ok();
 
