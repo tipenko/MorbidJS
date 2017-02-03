@@ -17,7 +17,13 @@ This is an experiment. I want to create framework with inheritance similar to CS
 
 That's it. This may get ugly soon, but i want to see it myself.
 
-### Why? #
+
+### Warning: this text a bit outdated ! #
+As this is in early development stage and we ( in quantity of one ) are eager to see results, framework itself comes first and readme comes second. But tests comes zero, and are 100% up to date no matter what.
+
+Please, see [Unit tests in your browser](https://cdn.rawgit.com/tipenko/MorbidJS/master/mocha-public.html). I am trying hard to make them human-readable.
+
+### Why we do Morbid? #
 - Conditions and loops may turn out not to be not necessary anymore;
 - Smaller methods;
 - Faster development, smaller and cleaner code. Or not!
