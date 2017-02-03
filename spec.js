@@ -30,7 +30,6 @@ describe("Morbid puts M() in global namespace and does following: ", function() 
 			expect(M.wipe).to.be.ok();
 			expect(Object.getOwnPropertyNames(M).length == 9).to.be.ok(); // that is our 4 plus usual ones
 			//["length", "name", "arguments", "caller", "prototype", "lute", "bulk", "wipe", "rein"]
-
 		});
 
 	it(

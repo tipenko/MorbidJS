@@ -21,12 +21,13 @@ That's it. This may get ugly soon, but i want to see it myself.
 ### Warning: this text a bit outdated ! #
 As this is in early development stage and we ( in quantity of one ) are eager to see results, framework itself comes first and readme comes second. But tests comes zero, and are 100% up to date no matter what.
 
-Please, see [Unit tests in your browser](https://cdn.rawgit.com/tipenko/MorbidJS/master/mocha-public.html). I am trying hard to make them human-readable.
+Please, see [Unit tests in your browser](https://cdn.rawgit.com/tipenko/MorbidJS/master/mocha-public.html). I am very serious about making them as easy to read as comics book.
 
 ### Why we do Morbid? #
 - Conditions and loops may turn out not to be not necessary anymore;
 - Smaller methods;
 - Faster development, smaller and cleaner code. Or not!
+- Software development process may change with Morbid (i.e. it may turn out that lute-sorting IDE is much more efficient then code editing) 
 - Something funny i can't foresee yet.
 
 ### Which method takes precedence?##
@@ -36,15 +37,6 @@ Dig [CSS Specificity](https://developer.mozilla.org/en/docs/Web/CSS/Specificity)
 - it is based on JQuery and lodash, JQuery methods are exposed in M response;
 - no backend with build processes required;
 - it is supposed to be easy and lightweight.
-
-### Data Model #
-Morbid is backed by jQuery. This is not forever.
-
-    M.append('<div id=app class=blacklist2/>')
-
-*div#app.blacklist2* is created after this call, as a child of detached root element. This element will have behaviour set by css-like behaviour sheets.
-
-Actual visible DOM may well act as model.
 
 ### Polymorphic decorator out-of-the-box #
 Given
@@ -124,7 +116,7 @@ Collections must be stored as ul>li or else, but every collection item must be s
 ### Javascript consideration #
 This object: in progress
 
-Event methods: do not use stopPropagation() or stopImmediatePropagation()
+Event methods: stopImmediatePropagation() makes no difference with stopPropagation().
 
 Avoid creating plain javascript objects with logic. Morbid handles logic.
 
