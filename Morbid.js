@@ -107,17 +107,6 @@
 	}
 
 	//adds new css rule. No way to delete rule yet. Maybe there should not be.
-	M.lute = function(selector, ruleObject) {
-		if (selector.indexOf(',') !== -1) {
-			var selectors = selector.split(',');
-			return _.each(selectors, (selector) => {
-				M.lute(selector, ruleObject);
-			});
-		}
-		addLute(selector, ruleObject);
-	};
-
-	//adds new css rule. No way to delete rule yet. Maybe there should not be.
 	M.bulk = function(o) {
 		_.forIn(o, (ruleObject, selector) => addLute(selector, ruleObject));
 	};

@@ -25,10 +25,10 @@ describe("Morbid puts M() in global namespace and does following: ", function() 
 	it("It's api is rather small and contains as little as four static methods"
 		, () => {
 			expect(M.rein).to.be.ok();
-			expect(M.lute).to.be.ok();
+			//expect(M.lute).to.be.ok();
 			expect(M.bulk).to.be.ok();
 			expect(M.wipe).to.be.ok();
-			expect(Object.getOwnPropertyNames(M).length == 9).to.be.ok(); // that is our 4 plus usual ones
+			expect(Object.getOwnPropertyNames(M).length == 8).to.be.ok(); // that is our 4 plus usual ones
 			//["length", "name", "arguments", "caller", "prototype", "lute", "bulk", "wipe", "rein"]
 		});
 
@@ -46,14 +46,13 @@ describe("Morbid puts M() in global namespace and does following: ", function() 
 	it(
 		"applies behaviours to pre-existing DOM using JQuery selectors. We call pair (selector, {eventOrMethodName: function}) a lute."
 		, () => {
-			expect(M.lute).to.be.ok();
 			expect(M.bulk).to.be.ok();
 
-			M.lute('.child1', {
+			M.bulk({'.child1': {
 				test: () => {
 					return true;
 				}
-			});
+			}});
 		});
 
 	it("You can add lutes one by one or with bulk method.", () => {
@@ -82,11 +81,11 @@ describe("Morbid puts M() in global namespace and does following: ", function() 
 	it(
 		"Applied methods can be invoked like this:  M(selector).methodName() . M(selector) is, um, polymorphic decorator"
 		, () => {
-			M.lute('.child1', {
+			M.bulk({'.child1': {
 				test: () => {
 					return true;
 				}
-			});
+			}});
 			var r = M('.child1').test();
 			expect(r).to.equal(true);
 		});
@@ -94,18 +93,16 @@ describe("Morbid puts M() in global namespace and does following: ", function() 
 	it(
 		"You can call method simply (get any single return with collection) or, using .W property. If W is used, you get a full execution report"
 		, () => {
-			M.lute('#app', {
+			M.bulk({'#app': {
 				sound: () => {
 					return 'paramparamparam';
 				}
-			});
-
-			M.lute('.child2', {
+			}, '.child2': {
 				sound: () => {
 					return true;
 				}
-			});
-			expect(M('#app').sound() == 'paramparamparam').to.be.ok;
+			}});
+			expect(M('#app').sound() == 'paramparamparam').to.be.ok();
 			var o = M('span').W.sound();
 			expect(o.length).to.equal(2);
 		});
@@ -113,18 +110,15 @@ describe("Morbid puts M() in global namespace and does following: ", function() 
 	it(
 		".W full report looks like array [{elementReference, returnValue}, ..] .W stands for nothing, it's just M upwards down."
 		, () => {
-			M.lute('#app', {
+			M.bulk({'#app': {
 				sound: () => {
 					return 'paramparamparam';
 				}
-			});
-
-			M.lute('.child2', {
+			},  '.child2': {
 				sound: () => {
 					return true;
 				}
-			});
-
+			}});
 			var o = M('span').W.sound();
 			expect(o[0].returnValue).to.equal('paramparamparam');
 			expect(o[1].returnValue).to.equal(true);
@@ -133,26 +127,24 @@ describe("Morbid puts M() in global namespace and does following: ", function() 
 	it(
 		"M(selector), just as $(selector), may operate over a set of DOM elements. It has every method found in every DOM item of collection   "
 		, () => {
-			M.lute('#app', {
+			M.bulk({'#app': {
 				sound: () => {
 					return 'paramparamparam';
 				}
 				, mute: () => {
 					return 'mute';
 				}
-			});
-
-			M.lute('.child1', {
+			},
+			'.child1' : {
 				sound: () => {
 					return true;
 				}
-			});
-
-			M.lute('#app.child1', {
+			},
+			'#app.child1': {
 				sound: () => {
 					return "app";
 				}
-			});
+			}});
 
 			var s = M('#app').W.sound();
 			var m = M('#app').W.mute();
@@ -165,11 +157,11 @@ describe("Morbid puts M() in global namespace and does following: ", function() 
 	it(
 		"M(selector).nonExistingMethod() does not results in exception. It's perfectly fine."
 		, () => {
-			M.lute('.child1', {
+			M.bulk({'.child1': {
 				test: () => {
 					return true;
 				}
-			});
+			}});
 			var fine = undefined;
 			try {
 				M('.child1').explode();
@@ -184,11 +176,11 @@ describe("Morbid puts M() in global namespace and does following: ", function() 
 
 	it("lute allows to add rule with comma-separated selectors", () => {
 		var result = 0;
-		M.lute('.child1, #host .child2', {
+		M.bulk({'.child1, #host .child2': {
 			click: (event) => {
 				result++;
 			}
-		});
+		}});
 
 		$('.child1').trigger('click');
 		$('.child2').trigger('click');
@@ -198,17 +190,15 @@ describe("Morbid puts M() in global namespace and does following: ", function() 
 
 	it("Morbid effectively merges two consequent lutes with same selectors ", () => {
 		var clickWork = false;
-		M.lute('#app', {
+		M.bulk({
+			'#app': {
 			sound: (event) => {
 				return 2;
-			}
-		});
-
-		M.lute('#app', {
+			},
 			'click': (event) => {
 				clickWork = true;
 			}
-		});
+		}});
 		M('#app').trigger('click');
 
 		expect(M('#app').sound() == 2).to.be.ok();
@@ -220,18 +210,16 @@ describe("Morbid puts M() in global namespace and does following: ", function() 
 		, () => {
 			var clickWork = false;
 			var firstNotCalled = true;
-			M.lute('#app', {
+			M.bulk({'#app': {
 				sound: (event) => {
 					return 2;
 					firstNotCalled = false;
 				}
-			});
-
-			M.lute('#app', {
+			}, '#app': {
 				sound: (event) => {
 					return 3;
 				}
-			});
+			}});
 			expect(firstNotCalled).to.be.ok();
 			expect(M('#app').sound() == 3).to.be.ok();
 		});
@@ -240,17 +228,15 @@ describe("Morbid puts M() in global namespace and does following: ", function() 
 		"Morbid overrides first added method if selectors are different but specificty is same, part 1 "
 		, () => {
 			var clickWork = false;
-			M.lute('.child1', {
+			M.bulk({'.child1': {
 				sound: (event) => {
 					return 2;
 				}
-			});
-
-			M.lute('.childall', {
+			},'.childall': {
 				sound: (event) => {
 					return 3;
 				}
-			});
+			}});
 			expect(M('#app').sound() == 3).to.be.ok();
 		});
 
@@ -259,17 +245,15 @@ describe("Morbid puts M() in global namespace and does following: ", function() 
 		, () => {
 			var clickWork = false;
 
-			M.lute('.childall', {
+			M.bulk({'.childall': {
 				sound: (event) => {
 					return 3;
 				}
-			});
-
-			M.lute('.child1', {
+			}, '.child1': {
 				sound: (event) => {
 					return 2;
 				}
-			});
+			}});
 			expect(M('#app').sound() == 2).to.be.ok();
 		});
 
@@ -300,23 +284,23 @@ describe("Handling events with Morbid ", () => {
 
 	it("Event listener can be added with Morbid as well as method.. ", () => {
 		var itHasChanged = false;
-		M.lute('.child1', {
+		M.bulk({'.child1':  {
 			click: () => {
 				itHasChanged = true;
 				return true;
 			}
-		});
+		}});
 
 		$('.child1').trigger('click');
 		expect(itHasChanged).to.be.ok();
 	});
 
 	it("..and for event as well.", () => {
-		M.lute('.child1', {
+		M.bulk({'.child1': {
 			click: (event) => {
 				expect(event.type).to.be.equal('click');
 			}
-		});
+		}});
 
 		$('.child1').trigger('click');
 	});
@@ -325,17 +309,15 @@ describe("Handling events with Morbid ", () => {
 		"an event listener described in lute with higher specificity, overrides the one lower. They are not added up. e.stopImmediatePropagation in Morbid is same as e.stopPropagation()."
 		, () => {
 			var result = 0;
-			M.lute('.child1', {
+			M.bulk({'.child1' : {
 				click: (event) => {
 					result = 1;
 				}
-			});
-
-			M.lute('#host .child1', {
+			}, '#host .child1': {
 				click: (event) => {
 					result = 2;
 				}
-			});
+			}});
 
 			$('.child1').trigger('click');
 			expect(result).to.be.equal(2);
@@ -363,10 +345,10 @@ describe("Handling events with Morbid ", () => {
 				, a2 = false;
 
 			try {
-				M.lute('.child1', {
+				M.bulk({'.child1': {
 					'click': (event) => {}
 					, 'click onkeyup': (event) => {}
-				});
+				}});
 			} catch (e) {
 				var res = e;
 			}
@@ -401,11 +383,11 @@ describe("Dom traversal and manipulation ", () => {
 		, () => {
 			var clickWork = false;
 
-			M.lute('#MorbidBase', {
+			M.bulk({'#MorbidBase': {
 				fun: (event) => {
 					return 'fun';
 				}
-			});
+			}});
 
 			expect(M('#app').closest).to.be.ok();
 			expect(M('#app').closest('#MorbidBase')).to.be.ok();
@@ -417,11 +399,11 @@ describe("Dom traversal and manipulation ", () => {
 		, () => {
 			var clickWork = false;
 
-			M.lute('.childall', {
+			M.bulk({'.childall': {
 				fun: (event) => {
 					return 'fun';
 				}
-			});
+			}});
 
 			expect(M('#app').closest).to.be.ok();
 			var a = M('#app').closest('#MorbidBase').find('span').fun();
@@ -475,21 +457,21 @@ describe("This object calculation", function() {
 	it(
 		"Morbid binds this of method to M(specific instance) for Morbid method invocation "
 		, () => {
-			M.lute('#app', {
+			M.bulk({'#app': {
 				'fun': function() {
 					return this.fun ? true : false;
 				}
-			});
+			}});
 
 			expect(M('#app').fun()).to.be.ok();
 		});
 
 	it("for multiple method invocation through W as well as for usual ones", () => {
-		M.lute('#host input', {
+		M.bulk({'#host input': {
 			'fun': function() {
 				return this.fun ? true : false;
 			}
-		});
+		}});
 		var allTrue = _.every(M('input').W.fun(), (i) => i.returnValue)
 		expect(allTrue).to.be.ok();
 	});
@@ -499,11 +481,11 @@ describe("This object calculation", function() {
 	it(
 		"This object contains all JQuery methods. In fact, those of JQuery are returned instead of yours in case of name conflict. "
 		, () => {
-			M.lute('#app', {
+			M.bulk({'#app': {
 				'fun': function() {
 					return this.find ? true : false;
 				}
-			});
+			}});
 
 			expect(M('#app').fun()).to.be.ok();
 		});
@@ -511,11 +493,11 @@ describe("This object calculation", function() {
 	it(
 		"JQuery.closest() is also exposed through this, and it especially nice to use "
 		, () => {
-			M.lute('#app', {
+			M.bulk({'#app': {
 				'fun': function() {
 					return this.closest ? true : false;
 				}
-			});
+			}});
 
 			expect(M('#app').fun()).to.be.ok();
 		});
@@ -528,9 +510,9 @@ describe("This object calculation", function() {
 			function required() {
 				return this['validate'] ? true : false;
 			}
-			M.lute('#host', {
+			M.bulk({'#host': {
 				'validate': required
-			});
+			}});
 			expect(M('#host').validate()).to.be.ok();
 		});
 
@@ -540,9 +522,9 @@ describe("This object calculation", function() {
 		function l() {
 			has = this['find'] ? true : false;
 		}
-		M.lute('#host', {
+		M.bulk({'#host': {
 			click: l
-		});
+		}});
 		M('#host').trigger('click');
 		expect(has).to.be.ok();
 	});
@@ -553,9 +535,9 @@ describe("This object calculation", function() {
 		function l() {
 			count += this['find'] ? true : false;
 		}
-		M.lute('input', {
+		M.bulk({'input': {
 			'click onkeyup': l
-		});
+		}});
 		M('input').trigger('click');
 		expect(count == 2).to.be.ok();
 	});
