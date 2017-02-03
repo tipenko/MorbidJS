@@ -1,4 +1,4 @@
-describe("Morbid is M() and does following: ", function() {
+describe("Morbid puts M() in global namespace and does following: ", function() {
 	beforeEach(() => {
 		M.wipe();
 		$('body').append('<div id=MorbidBase/>');
