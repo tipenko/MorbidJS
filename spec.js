@@ -22,14 +22,13 @@ describe("Morbid puts M() in global namespace and does following: ", function() 
 		expect(M).to.be.ok();
 	});
 
-	it("It's api is rather small and contains as little as four static methods"
+	it("It's api is rather small and contains as little as four static methods, including M itself"
 		, () => {
 			expect(M.rein).to.be.ok();
-			//expect(M.lute).to.be.ok();
 			expect(M.bulk).to.be.ok();
 			expect(M.wipe).to.be.ok();
-			expect(Object.getOwnPropertyNames(M).length == 8).to.be.ok(); // that is our 4 plus usual ones
-			//["length", "name", "arguments", "caller", "prototype", "lute", "bulk", "wipe", "rein"]
+			expect(Object.getOwnPropertyNames(M).length == 8).to.be.ok(); // that is our 3 plus usual ones
+			//["length", "name", "arguments", "caller", "prototype", "bulk", "wipe", "rein"]
 		});
 
 	it(
