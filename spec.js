@@ -131,23 +131,6 @@ describe("Morbid puts M() in global namespace and does following: ", function() 
 			expect(o[1].returnValue).to.equal(true);
 		});
 
-
-	/*it("this works just like css. Rules in lute with higher specificity do override lower-specificity lute rules. Rules that are not overriden stay in effect. ", () => {
-		M.lute('#app', {
-			sound: () => {
-				return 'paramparamparam';
-			}
-		});
-
-		M.lute('.child1', {
-			sound: () => {
-				return true;
-			}
-		});
-
-		expect(M('span').sound()).to.equal('paramparamparam');
-	});*/
-
 	it(
 		"M(selector), just as $(selector), may operate over a set of DOM elements. It has every method found in every DOM item of collection   "
 		, () => {
@@ -234,7 +217,7 @@ describe("Morbid puts M() in global namespace and does following: ", function() 
 	});
 
 	it(
-		"Morbid overrides first added method if same methods are consequently added to system. Methods are not summed up, the last one stays."
+		"Morbid overrides first added method if same methods are consequently added to system. Methods are not summed up, the latter overwrites the former"
 		, () => {
 			var clickWork = false;
 			var firstNotCalled = true;
@@ -373,25 +356,6 @@ describe("Handling events with Morbid ", () => {
 		$('.child1').trigger('click').trigger('keyup');
 		expect(result).to.be.equal(2);
 	});
-
-	/*it("conflicting event listeners : listener of more specific selector fires, listeners of less specific are discarded", () => {
-		var a1=false,a3=false;
-		M.lute('.child1', {
-			'click' : (event) => {
-				a1++;
-			}
-		});
-
-		M.lute('#app', {
-			'click' : (event) => {
-				a3++;
-			}
-		});
-
-		var retval = M('.child1').trigger('click');
-		expect(a3).to.be.ok();
-		expect(!a1).to.be.ok();
-	});*/
 
 	it(
 		"if there is an event names conflict, Morbid will be unable to decide which one of listeners takes precedence, and will throw an exception. Good thing is that you get that one instantly after M.lute/M.bulk."
@@ -623,15 +587,16 @@ describe("Upcoming tasks. These tests are supposed to fail", function() {
 		"this object stays fresh all method long. If you change current dom element class in the middle, new methods become available, olds become unavailable"
 		, () => {
 			expect(false).to.be.ok();
-
 		});
 
 	it(
 		"full execution report contains useful methods like &&all or lodash chain applied"
 		, () => {
 			expect(false).to.be.ok();
-
 		});
 
-
+	it("there is absolutely no real problem Morbid solves described in this document. Everybody hates frameworks so we have to provide and advertise something truly unique to justifty our existence"
+	, () => {
+		expect(false).to.be.ok();
+	});
 });
