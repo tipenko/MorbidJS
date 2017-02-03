@@ -293,7 +293,7 @@ describe("Morbid is M() and does following: ", function() {
 
 });
 
-describe("Events specification and handling: ", () => {
+describe("Handling events with Morbid ", () => {
 
 	beforeEach(() => {
 		M.wipe();
@@ -413,8 +413,7 @@ describe("Events specification and handling: ", () => {
 
 });
 
-
-describe("Dom traverse and manipulation ", () => {
+describe("Dom traversal and manipulation ", () => {
 	beforeEach(() => {
 		M.wipe();
 		$('body').append('<div id=MorbidBase/>');
