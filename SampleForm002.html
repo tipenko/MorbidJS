@@ -3,6 +3,17 @@
   <meta charset="utf-8">
   <title>Sample Form 002</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <style>
+  .M-form .alert.alert-danger {
+    display:none;
+  }
+
+  .M-form .M-invalid .alert.alert-danger {
+    display: initial;
+  }
+
+  </style>
 </head>
 <body id="mainApp">
   <script src="https://cdn.rawgit.com/jquery/jquery/2.1.4/dist/jquery.min.js"></script>
@@ -11,13 +22,29 @@
   <script src="Morbid.js"></script>
    
   <script>
+
+    function required(){
+      var v = this.find('input').val();
+      console.log('val is ',v );
+      return v!=='';
+    }
+
+    function update(){
+      console.log('update');
+      this.toggleClass('M-invalid', !this.validate());
+    }
+
     M.rein(document.body);
 
     M.bulk({
-      '.Mvalidable' : {
-        validate: (event) => M('#mainForm input[name=firstname]').val().length>0,
-        click: () => console.log('hello', this)
+      '.M-form .form-group' : {
+        'validate': required, //they are all required by default
+        'click keyup': update
       },
+
+      '.M-form ,' 
+
+
 
 
     });
@@ -61,27 +88,8 @@
       </div>
     </div>
 
-    <!--<div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
-        </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
-       </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
-        </div>
-      </div>-->
 
-
-      <form class="form-horizontal M-validable">
+      <form class="form-horizontal M-form">
 <fieldset>
 
 <!-- Form Name -->
@@ -90,6 +98,11 @@
 <!-- Text input-->
 <div class="form-group M-name">
   <label class="col-md-4 control-label" for="fn">First name</label>  
+
+   <div class="alert alert-danger" role="alert">
+        <strong>Oh snap!</strong> Change a few things up and try submitting again.
+    </div>
+
   <div class="col-md-4">
   <input id="fn" name="fn" type="text" placeholder="first name" class="form-control input-md" required="">
     
@@ -99,6 +112,10 @@
 <!-- Text input-->
 <div class="form-group M-lastname">
   <label class="col-md-4 control-label" for="ln">Last name</label>  
+    <div class="alert alert-danger" role="alert">
+        <strong>Oh snap!</strong> Change a few things up and try submitting again.
+    </div>
+
   <div class="col-md-4">
   <input id="ln" name="ln" type="text" placeholder="last name" class="form-control input-md" required="">
     
@@ -107,7 +124,10 @@
 
 <!-- Text input-->
 <div class="form-group M-company">
-  <label class="col-md-4 control-label" for="cmpny">Company</label>  
+  <label class="col-md-4 control-label" for="cmpny">Company</label> 
+     <div class="alert alert-danger" role="alert">
+        <strong>Oh snap!</strong> Change a few things up and try submitting again.
+    </div> 
   <div class="col-md-4">
   <input id="cmpny" name="cmpny" type="text" placeholder="company" class="form-control input-md" required="">
     
@@ -117,6 +137,9 @@
 <!-- Text input-->
 <div class="form-group M-email">
   <label class="col-md-4 control-label" for="email">Email</label>  
+     <div class="alert alert-danger" role="alert">
+        <strong>Oh snap!</strong> Change a few things up and try submitting again.
+    </div>
   <div class="col-md-4">
   <input id="email" name="email" type="text" placeholder="email" class="form-control input-md" required="">
     
@@ -235,7 +258,7 @@
 </div>
 
 <!-- Button -->
-<div class="form-group">
+<div class="form-group M-submit-group">
   <label class="col-md-4 control-label" for="submit"></label>
   <div class="col-md-4">
     <button id="submit" name="submit" class="btn btn-primary">SUBMIT</button>

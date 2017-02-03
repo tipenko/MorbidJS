@@ -35,8 +35,11 @@
     M.bulk({
       '#mainForm' : {
         validate: (event) => M('#mainForm input[name=firstname]').val().length>0,
-        'keyup change click': (event) => M('#mainForm').update(),
-        update: () => M('#mainForm').toggleClass('invalid', !M('#mainForm').validate()),
+        'keyup change click': (event) => {M('#mainForm').update(); console.log(event)} ,
+        update: () => {
+           M('#mainForm').toggleClass('invalid', !M('#mainForm').validate());
+           console.log('update');
+        },
       }, 
       '#mainForm:not(.invalid) .submitButton' : {
         click: (event) => M('#mainForm').validate() && M('#mainForm').submit()

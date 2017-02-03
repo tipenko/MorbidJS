@@ -97,6 +97,11 @@ If you love capturing and don't know how to deal without it, remember what Morbi
 
 Events are not added up. Two event listeners with same specificity cannot exist in Morbid.
 
+### Difference between events and methods#
+1) You can specify events with space-separated string like 'onkeyup click' 2) eventhandlet gets event as param 
+
+This should be all.
+
 ### Where do I store data? #
 In DOM.
 

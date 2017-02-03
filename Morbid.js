@@ -28,12 +28,19 @@
 			'keyup',
 			'error'];
 
+	function isNonJqueryDomManipulationFunction(jQuerySet, propertyName) {
+		if (typeof jQuerySet[propertyName]!=='function') return true;
+		if (propertyName == "val") return true;
+		return false;
+	}
+
 	M = function(selectorOrJQueryObject){
 		var foundSet = selectorOrJQueryObject.context ? selectorOrJQueryObject :  jQuery(selectorOrJQueryObject, rootEl);
 
 		//if selectorOrJQueryObject is jqueryObject, we should wrap it 
 
 		function run(methodName){
+			
 			var meaningfulArguments = Array.prototype.slice.call(arguments); //arguments passed from caller
 			meaningfulArguments.shift();
 			//iterate over all elements of foundSet. If method is present for them, invoke it and report
@@ -43,7 +50,8 @@
 				var thisObject = getThis(elementReference);
 				var method = thisObject[methodName];
 				if (method) {
-					var returnValue = method.apply(elementReference, meaningfulArguments);
+					
+					var returnValue = method.apply(M(elementReference), meaningfulArguments);
 					report.push({
 						elementReference,
 						returnValue
@@ -56,7 +64,7 @@
 		var soleWrapper = new Proxy(foundSet, {
 			get: (fs, name) => {
 				if (fs[name]) {
-					if (typeof fs[name]=='function') {
+					if (!isNonJqueryDomManipulationFunction(fs, name)) {
 						return function(a) {
 							//return M( (fs[name]).apply(fs, arguments); ) 
 							return M(fs[name].apply(fs, arguments));
@@ -69,7 +77,7 @@
 
 				if (name == "W") return multipleWrapper;
 				//we have a name of a method. we have to iterate over collection 
-				return () => {
+				return function() {
 						var a = Array.prototype.slice.call(arguments);
 						a.splice(0,0, name);
 						var report = run.apply(foundSet, a);
@@ -111,7 +119,7 @@
 		_.forIn(o, (ruleObject, selector) => addLute(selector, ruleObject) );
 	};
 
-	M.purge = function() {
+	M.wipe = function() {
 		jQuery(rootEl).off();
 		rootEl = document.createElement('div');
 		lutesSortedArray =  [];
@@ -188,14 +196,14 @@
 		var type = event.type;
 		var to = getThis(event.currentTarget);
 		if (to[event.type]) {
-			return to[event.type](event);
+			return to[event.type].call(M(event.currentTarget),event);
 		}
-		//if we got there, user has specified event name like 'click onkeyup',and we have to find a selector with substring.
+		//if we got there, user has specified event name like 'click onkeyup', and we have to find a selector with substring.
 		var oneRandomMatchingEventListener = _.chain(to).pickBy((fn, sel) => {
 			return (sel.indexOf(event.type) !== -1);
 		}).toPairs().first().last().value();
 
-		return oneRandomMatchingEventListener(event);
+		return oneRandomMatchingEventListener.call(M(event.currentTarget),event);
 	}
 
 })();
